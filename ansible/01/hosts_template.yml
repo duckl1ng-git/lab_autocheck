@@ -1,0 +1,26 @@
+[win]
+{{ win7_ip }}
+{{ win10_ip }}
+
+[win:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user=Admin
+ansible_password=eve@123
+
+[winsrv]
+{{ winsrv_ip }}
+
+[winsrv:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user=Administrator
+ansible_password=eve@123
+
+[pfsense]
+{{ pfsense_ip }}
+
+[pfsense:vars]
+ansible_connection=ssh
+ansible_user=admin
+ansible_password=pfsense

@@ -1,0 +1,19 @@
+- name: pfSense Check
+  hosts: pfsense
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping
+    ping:
+
+  - name: Admin Password Check
+    pfsensible.core.pfsense_user:
+      name: admin
+      state: present
+  
+  - name: Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: em1
+      descr: LAN
+      ipv4_address: 192.168.100.254

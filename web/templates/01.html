@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab Checker</title>
+</head>
+<body>
+    <h1>01_Windows</h1>
+    <h3>Укажите требуемые данные в соотвествии с тем, как сделано у Вас.</h3>
+    <p>Обратите внимание, поля уже предзаполнены. Если у Вас такие же значения, менять их не обзятельно.</p>
+    <form method="post" action="/01" target="test_iframe">
+        <input type="hidden" name="lab_id" value="01">
+        <label>PfSense IP:</label>
+        <input type="text" name="pfsense_ip" placeholder="PfSense IP" value="192.168.100.254">
+        <br>
+        <label>Windows Server IP:</label>
+        <input type="text" name="winsrv_ip" placeholder="Windows Server IP" value="192.168.100.10">
+        <br>
+        <label>Windows 7 IP:</label>
+        <input type="text" name="win7_ip" placeholder="Windows 7 IP" value="192.168.100.11">
+        <br>
+        <label>Windows 10 IP:</label>
+        <input type="text" name="win10_ip" placeholder="Windows 10 IP" value="192.168.100.12">
+        <br>
+        <label>Введите вашу команду здесь:</label>
+        <input type="text" name="command" placeholder="Введите вашу команду здесь">
+        <br>
+        <input type="submit" value="Выполнить команду">
+    </form>
+    <hr>
+    <iframe name="test_iframe" width="800" height="600"></iframe>
+</body>
+</html>
