@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, Response, redirect
 import subprocess
 from jinja2 import Environment, FileSystemLoader
+from ansi2html import Ansi2HTMLConverter
 
 app = Flask(__name__)
 
@@ -12,18 +13,19 @@ def Lab():
 def run_command(command):
     #command = request.form['command']
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    conv = Ansi2HTMLConverter(inline=True)
 
     def generate():
-        yield '<pre>\n'
+        #yield '<pre>\n'
         while True:
             output = process.stdout.readline()
             if output == '' and process.poll() is not None:
                 break
             if output:
-                yield output.strip() + '<br>\n'
+                yield conv.convert(output.strip())
         rc = process.poll()
-        yield f'Exit code: {rc}'
-        yield '</pre>\n'
+        #yield f'Exit code: {rc}'
+        #yield '</pre>\n'
 
     return Response(generate(), mimetype='text/html')
 

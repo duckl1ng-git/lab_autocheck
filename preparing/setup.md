@@ -26,9 +26,14 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ```bash
 apt update
-apt install -y git ansible sshpass python3-flask
+apt install -y git ansible sshpass python3-venv
 git clone https://github.com/duckl1ng-git/lab_autocheck.git
+cd lab_autocheck/ansible
 ansible-galaxy collection install pfsensible.core -p ./collections
+cd ../web
+python3 -m venv .venv
+.venv/bin/python -m pip install flask ansi2html
+.venv/bin/python app.py
 ```
 
 ??? ansible-galaxy collection install microsoft.ad -p ./collections ???
