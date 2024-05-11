@@ -26,7 +26,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ```bash
 apt update
-apt install -y ansible sshpass python3-flask
+apt install -y git ansible sshpass python3-flask
 git clone https://github.com/duckl1ng-git/lab_autocheck.git
 ansible-galaxy collection install pfsensible.core -p ./collections
 ```
