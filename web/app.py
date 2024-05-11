@@ -9,14 +9,11 @@ app = Flask(__name__)
 def Lab():
     return render_template('index.html')
 
-#@app.route('/check', methods=['POST'])
 def run_command(command):
-    #command = request.form['command']
     process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     conv = Ansi2HTMLConverter(inline=True)
 
     def generate():
-        #yield '<pre>\n'
         while True:
             output = process.stdout.readline()
             if output == '' and process.poll() is not None:
@@ -24,8 +21,6 @@ def run_command(command):
             if output:
                 yield conv.convert(output.strip())
         rc = process.poll()
-        #yield f'Exit code: {rc}'
-        #yield '</pre>\n'
 
     return Response(generate(), mimetype='text/html')
 
@@ -53,9 +48,8 @@ def Lab_01():
         
         with open(f'../ansible/{lab_id}/hosts_rendered.ini', 'w+t') as f:
             f.write(hosts)
-        #return '<pre>\n'+hosts+'</pre>'
-        command = request.form['command']
-        precommand = f"ansible-playbook -i ../ansible/{lab_id}/hosts_rendered.ini ../ansible/{lab_id}/check.yml"
+
+        command = f"ansible-playbook -i ../ansible/{lab_id}/hosts_rendered.ini ../ansible/{lab_id}/check.yml"
         return run_command(command)
 
 def get_template(id):
@@ -65,4 +59,4 @@ def get_template(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=False, host="0.0.0.0", port=80)
