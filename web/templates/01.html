@@ -13,8 +13,20 @@
         <label>PfSense IP:</label>
         <input type="text" name="pfsense_ip" placeholder="PfSense IP" value="192.168.100.254">
         <br>
+        <label>PfSense Admin name:</label>
+        <input type="text" name="pfsense_user" placeholder="PfSense Admin name" value="admin">
+        <br>
+        <label>PfSense Admin password:</label>
+        <input type="text" name="pfsense_pass" placeholder="PfSense Admin password" value="pfsense">
+        <br>
         <label>Windows Server IP:</label>
-        <input type="text" name="winsrv_ip" placeholder="Windows Server IP" value="192.168.100.10">
+        <input type="text" name="winsrv_ip" placeholder="Windows Server IP" value="192.168.100.1">
+        <br>
+        <label>Domain Admin name:</label>
+        <input type="text" name="d_admin_name" placeholder="Domain Admin name" value="Administrator">
+        <br>
+        <label>Domain Admin password:</label>
+        <input type="text" name="d_admin_pass" placeholder="Domain Admin password" value="eve@1234">
         <br>
         <label>Windows 7 IP:</label>
         <input type="text" name="win7_ip" placeholder="Windows 7 IP" value="192.168.100.11">
@@ -22,7 +34,13 @@
         <label>Windows 10 IP:</label>
         <input type="text" name="win10_ip" placeholder="Windows 10 IP" value="192.168.100.12">
         <br>
-        <label>Введите вашу команду здесь:</label>
+        <label>Local Admin name:</label>
+        <input type="text" name="l_admin_name" placeholder="Local Admin name" value="Admin">
+        <br>
+        <label>Local Admin password:</label>
+        <input type="text" name="l_admin_pass" placeholder="Local Admin password" value="eve@123">
+        <br>
+        <label>Введите вашу команду:</label>
         <input type="text" name="command" placeholder="Введите вашу команду здесь">
         <br>
         <input type="submit" value="Выполнить команду">

@@ -1,6 +1,6 @@
 # Windows 10 / Windows server 2012R2
 
-Скачать [скрипт](https://disk.yandex.ru/d/OZo-hIjv5G7Kag)
+Скачать [скрипт](https://raw.githubusercontent.com/duckl1ng-git/lab_autocheck/main/preparing/winrm_basic.ps1)
 
 Разрешить выполнение скриптов:
 ```PowerShell
@@ -11,6 +11,8 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 ```PowerShell
 .\winrm_basic.ps1
 ```
+
+> Для Windows Server возможно не нужно выполнять скрипт, т.к. winrm уже включен. Проверить!
 
 # Windows 7
 
@@ -24,8 +26,9 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ```bash
 apt update
-apt install -y ansible sshpass
-git clone https://github.com/duckl1ng/...
+apt install -y ansible sshpass python3-flask
+git clone https://github.com/duckl1ng-git/lab_autocheck.git
 ansible-galaxy collection install pfsensible.core -p ./collections
-??? ansible-galaxy collection install microsoft.ad -p ./collections ???
 ```
+
+??? ansible-galaxy collection install microsoft.ad -p ./collections ???

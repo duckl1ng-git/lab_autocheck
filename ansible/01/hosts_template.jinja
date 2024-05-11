@@ -1,0 +1,34 @@
+[win]
+win7 ansible_host={{ win7_ip }}
+win10 ansible_host={{ win10_ip }}
+
+[win:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user={{ win_user }}
+ansible_password={{ win_pass }}
+
+[winsrv]
+winsrv ansible_host{{ winsrv_ip }}
+
+[winsrv:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user={{ winsrv_user }}
+ansible_password={{ winsrv_pass }}
+
+[domain:children]
+win
+winsrv
+
+[domain:vars]
+domain_admin_user={{ winsrv_user }}
+domain_admin_pass={{ winsrv_pass }}
+
+[pfsense]
+pfsense ansible_host={{ pfsense_ip }}
+
+[pfsense:vars]
+ansible_connection=ssh
+ansible_user={{ pfsense_user }}
+ansible_password={{ pfsense_pass }}

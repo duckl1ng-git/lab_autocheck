@@ -30,8 +30,8 @@
     vars:
       ansible_become: true
       ansible_become_method: runas
-      ansible_become_user: "{{ domain.output[1] }}\\Administrator"
-      ansible_become_password: eve@1234
+      ansible_become_user: "{{ domain.output[1] }}\\{{ domain_admin_user }}"
+      ansible_become_password: "{{ domain_admin_pass }}"
     failed_when:
       - "'disabled' in gpresult.output[0].Context.PostContext"
     loop:

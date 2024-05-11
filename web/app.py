@@ -38,21 +38,28 @@ def Lab_01():
 
         hosts = template.render(
             pfsense_ip = request.form['pfsense_ip'],
+
             winsrv_ip = request.form['winsrv_ip'],
+            winsrv_user = request.form['d_admin_name'],
+            winsrv_pass = request.form['d_admin_pass'],
             win7_ip = request.form['win7_ip'],
             win10_ip = request.form['win10_ip'],
+            win_user = request.form['l_admin_name'],
+            win_pass = request.form['l_admin_pass'],
+            pfsense_user = request.form['pfsense_user'],
+            pfsense_pass = request.form['pfsense_pass'],
         )
         
-        with open(f'../ansible/{lab_id}/hosts_rendered.yml', 'w+t') as f:
+        with open(f'../ansible/{lab_id}/hosts_rendered.ini', 'w+t') as f:
             f.write(hosts)
         #return '<pre>\n'+hosts+'</pre>'
         command = request.form['command']
-        precommand = f"ansible-playbook -i ../ansible/{lab_id}/hosts_rendered.yml ../ansible/{lab_id}/check.yml"
+        precommand = f"ansible-playbook -i ../ansible/{lab_id}/hosts_rendered.ini ../ansible/{lab_id}/check.yml"
         return run_command(command)
 
 def get_template(id):
     env = Environment(loader=FileSystemLoader(f'../ansible/{id}'))
-    template = env.get_template(f'hosts_template.yml')
+    template = env.get_template(f'hosts_template.jinja')
     return template
 
 
