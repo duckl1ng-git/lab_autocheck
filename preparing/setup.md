@@ -31,9 +31,8 @@ git clone https://github.com/duckl1ng-git/lab_autocheck.git
 cd lab_autocheck/ansible
 ansible-galaxy collection install pfsensible.core -p ./collections
 cd ../web
-python3 -m venv .venv
-.venv/bin/python -m pip install flask ansi2html
-.venv/bin/python app.py
+chmod +x install.sh
+./install.sh
 ```
 
 ??? ansible-galaxy collection install microsoft.ad -p ./collections ???

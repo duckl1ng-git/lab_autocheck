@@ -1,0 +1,13 @@
+[Unit]
+Description=Lab Checker Web
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/lab_autocheck/web/
+ExecStart=/root/lab_autocheck/web/.venv/bin/python /root/lab_autocheck/web/app.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
