@@ -25,7 +25,7 @@
     when: inventory_hostname in groups['win']
     ansible.windows.win_powershell:
       script: |
-        whoami /gropus
+        whoami /fqdn
         $Ansible.Changed = $false
     register: whoami
     vars:
@@ -38,12 +38,13 @@
       label: "{{ item.username }}"
 
   - name: Print Users Whoami Result
+    when: inventory_hostname in groups['win']
     debug:
       msg:
         - "{{ item.output }}"
     loop: "{{ whoami.results }}"
     loop_control:
-      label: "{{ item.item }}"
+      label: "{{ item.username }}"
 
   - name: DisableCMD / DisableRegistry GPO Check
     ansible.windows.win_powershell:
