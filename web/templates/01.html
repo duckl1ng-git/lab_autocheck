@@ -10,7 +10,7 @@
     <p>Обратите внимание, поля уже предзаполнены. Если у Вас такие же значения, менять их не обзятельно.</p>
     <form method="post" action="/01" target="test_iframe">
         <input type="hidden" name="lab_id" value="01">
-        <label>PfSense IP:</label>
+        <!-- <label>PfSense IP:</label>
         <input type="text" name="pfsense_ip" placeholder="PfSense IP" value="192.168.100.254">
         <br>
         <label>PfSense Admin name:</label>
@@ -18,28 +18,53 @@
         <br>
         <label>PfSense Admin password:</label>
         <input type="text" name="pfsense_pass" placeholder="PfSense Admin password" value="pfsense">
-        <br>
+        <br> -->
         <label>Windows Server IP:</label>
         <input type="text" name="winsrv_ip" placeholder="Windows Server IP" value="192.168.100.1">
         <br>
+
         <label>Domain Admin name:</label>
         <input type="text" name="d_admin_name" placeholder="Domain Admin name" value="Administrator">
         <br>
         <label>Domain Admin password:</label>
         <input type="text" name="d_admin_pass" placeholder="Domain Admin password" value="eve@1234">
         <br>
+
         <label>Windows 7 IP:</label>
         <input type="text" name="win7_ip" placeholder="Windows 7 IP" value="192.168.100.11">
         <br>
         <label>Windows 10 IP:</label>
         <input type="text" name="win10_ip" placeholder="Windows 10 IP" value="192.168.100.12">
         <br>
+
         <label>Local Admin name:</label>
         <input type="text" name="l_admin_name" placeholder="Local Admin name" value="Admin">
         <br>
         <label>Local Admin password:</label>
         <input type="text" name="l_admin_pass" placeholder="Local Admin password" value="eve@123">
         <br>
+        
+        <label>Domain User 1 name:</label>
+        <input type="text" name="user1"  value="it">
+        <br>
+        <label>Domain User 1 password:</label>
+        <input type="text" name="pass1" value="1eve@123">
+        <br>
+
+        <label>Domain User 2 name:</label>
+        <input type="text" name="user2" value="finance">
+        <br>
+        <label>Domain User 2 password:</label>
+        <input type="text" name="pass2" value="2eve@123">
+        <br>
+        
+        <label>Domain User 3 name:</label>
+        <input type="text" name="user3" value="sales">
+        <br>
+        <label>Domain User 3 password:</label>
+        <input type="text" name="pass3" value="2eve@123">
+        <br>
+
         <input type="submit" value="Проверить">
     </form>
     <hr>

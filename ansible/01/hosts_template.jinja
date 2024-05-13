@@ -24,11 +24,12 @@ winsrv
 [domain:vars]
 domain_admin_user={{ winsrv_user }}
 domain_admin_pass={{ winsrv_pass }}
+domain_users="[ { '{{ user1 }}': '{{ pass1 }}' }, { '{{ user2 }}': '{{ pass2 }}' }, { '{{ user3 }}': '{{ pass3 }}' } ]"
 
-[pfsense]
-pfsense ansible_host={{ pfsense_ip }}
-
-[pfsense:vars]
-ansible_connection=ssh
-ansible_user={{ pfsense_user }}
-ansible_password={{ pfsense_pass }}
+; [pfsense]
+; pfsense ansible_host={{ pfsense_ip }}
+; 
+; [pfsense:vars]
+; ansible_connection=ssh
+; ansible_user={{ pfsense_user }}
+; ansible_password={{ pfsense_pass }}

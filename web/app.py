@@ -34,9 +34,9 @@ def Lab_01():
         template = get_template(lab_id)
 
         hosts = template.render(
-            pfsense_ip = request.form['pfsense_ip'],
-            pfsense_user = request.form['pfsense_user'],
-            pfsense_pass = request.form['pfsense_pass'],
+            # pfsense_ip = request.form['pfsense_ip'],
+            # pfsense_user = request.form['pfsense_user'],
+            # pfsense_pass = request.form['pfsense_pass'],
             winsrv_ip = request.form['winsrv_ip'],
             winsrv_user = request.form['d_admin_name'],
             winsrv_pass = request.form['d_admin_pass'],
@@ -44,6 +44,12 @@ def Lab_01():
             win10_ip = request.form['win10_ip'],
             win_user = request.form['l_admin_name'],
             win_pass = request.form['l_admin_pass'],
+            user1 = request.form['user1'],
+            pass1 = request.form['pass1'],
+            user2 = request.form['user2'],
+            pass2 = request.form['pass2'],
+            user3 = request.form['user3'],
+            pass3 = request.form['pass3'],
         )
         
         with open(f'../ansible/{lab_id}/hosts_rendered.ini', 'w+t') as f:
@@ -59,4 +65,4 @@ def get_template(id):
 
 
 if __name__ == '__main__':
-    app.run(debug=False, host="0.0.0.0", port=80)
+    app.run(debug=True, host="0.0.0.0", port=80)
