@@ -41,10 +41,10 @@
     when: inventory_hostname in groups['win']
     debug:
       msg:
-        - "{{ item.output }}"
+        - "{{ item.output[0] }}"
     loop: "{{ whoami.results }}"
     loop_control:
-      label: "{{ item.username }}"
+      label: "{{ item.item.username }}"
 
   - name: DisableCMD / DisableRegistry GPO Check
     ansible.windows.win_powershell:
