@@ -3,8 +3,6 @@ win7 ansible_host={{ win7_ip }}
 win10 ansible_host={{ win10_ip }}
 
 [win:vars]
-ansible_connection=winrm
-ansible_port=5985
 ansible_user={{ win_user }}
 ansible_password={{ win_pass }}
 
@@ -12,8 +10,6 @@ ansible_password={{ win_pass }}
 winsrv ansible_host={{ winsrv_ip }}
 
 [winsrv:vars]
-ansible_connection=winrm
-ansible_port=5985
 ansible_user={{ winsrv_user }}
 ansible_password={{ winsrv_pass }}
 
@@ -22,6 +18,8 @@ win
 winsrv
 
 [domain:vars]
+ansible_connection=winrm
+ansible_port=5985
 domain_admin_user={{ winsrv_user }}
 domain_admin_pass={{ winsrv_pass }}
 domain_users="[ { 'username': '{{ user1 }}', 'password': '{{ pass1 }}' }, { 'username': '{{ user2 }}', 'password': '{{ pass2 }}' }, { 'username': '{{ user3 }}', 'password': '{{ pass3 }}' } ]"

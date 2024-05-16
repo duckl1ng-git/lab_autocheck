@@ -1,5 +1,5 @@
 - name: 01_Windows_Check
-  hosts: win, winsrv
+  hosts: domain
   gather_facts: False
 
   tasks:
