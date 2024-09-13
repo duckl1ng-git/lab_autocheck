@@ -1,5 +1,5 @@
 - name: pfSense Check
-  hosts: fw_1, fw_2
+  hosts: fw1, fw2
   gather_facts: False
 
   tasks:
@@ -9,7 +9,7 @@
 
   - name: General Setup
     pfsensible.core.pfsense_setup:
-      hostname: FW-1
+      hostname: "{{ 'FW-1' if inventory_hostname == 'fw1' else 'FW-2' }}"
       domain: yargu
       dns_addresses: 8.8.8.8
       timezone: Europe/Moscow
