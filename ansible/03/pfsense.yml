@@ -23,7 +23,7 @@
       # Все параметры ниже приходится использовать, т.к. значения по умолчанию этих параметров не соотвествуют проверяемым
       # Возможно стоит отдельно сделать проверку по каждому интерфейсу
       enable: True
-      ipv4_type": "{{ 'dhcp' if inventory_hostname == 'fw1' else 'static' }}"
+      ipv4_type: "{{ 'dhcp' if inventory_hostname == 'fw1' else 'static' }}"
       # Два параметра ниже будут использоваться только при 'static'
-      ipv4_address": "{{ fw2_dmz_ip }}"
+      ipv4_address: "{{ fw2_dmz_ip }}"
       ipv4_gateway: "WANGW"
