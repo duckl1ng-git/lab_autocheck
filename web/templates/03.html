@@ -11,11 +11,16 @@
     <form method="post" action="/03" target="test_iframe">
         <input type="hidden" name="lab_id" value="03">
         
-        <label>FW-1 IP:</label>
-        <input type="text" name="fw1_ip" placeholder="PfSense IP" value="10.10.10.254">
+        <label>FW-1 DMZ IP:</label>
+        <input type="text" name="fw1_dmz_ip" placeholder="PfSense IP" value="10.10.10.254">
         <br>
-        <label>FW-2 IP:</label>
-        <input type="text" name="fw2_ip" placeholder="PfSense IP" value="10.10.20.254">
+
+        <label>FW-2 DMZ IP:</label>
+        <input type="text" name="fw2_dmz_ip" placeholder="PfSense IP" value="10.10.10.1">
+        <br>
+
+        <label>FW-2 LAN IP:</label>
+        <input type="text" name="fw2_lan_ip" placeholder="PfSense IP" value="10.10.20.254">
         <br>
 
         <label>PfSense Admin name:</label>

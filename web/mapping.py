@@ -19,8 +19,9 @@ mapping = [
     {},
     # 03
     {
-        'fw1_ip': '',
-        'fw2_ip': '',
+        'fw1_dmz_ip': '',
+        'fw2_lan_ip': '',
+        'fw2_dmz_ip': '',
         'pfsense_user': '',
         'pfsense_pass': '',
         'win7_dmz_ip': '',

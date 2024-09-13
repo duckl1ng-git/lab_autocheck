@@ -9,10 +9,13 @@ ansible_connection=winrm
 ansible_port=5985
 
 [pfsense]
-fw1 ansible_host={{ fw1_ip }}
-fw2 ansible_host={{ fw2_ip }}
+fw1 ansible_host={{ fw1_dmz_ip }}
+fw2 ansible_host={{ fw2_lan_ip }}
 
 [pfsense:vars]
 ansible_connection=ssh
 ansible_user={{ pfsense_user }}
 ansible_password={{ pfsense_pass }}
+fw1_dmz_ip={{ fw1_dmz_ip }}
+fw2_dmz_ip={{ fw2_dmz_ip }}
+fw2_lan_ip={{ fw2_lan_ip }}
