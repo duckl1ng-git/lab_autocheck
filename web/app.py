@@ -48,7 +48,7 @@ def Lab_N(id):
         with open(f'../ansible/{id}/hosts_rendered.ini', 'w+t') as f:
             f.write(hosts)
 
-        command = f"ansible-playbook -i ../ansible/{id}/hosts_rendered.ini ../ansible/{id}/check.yml -C"
+        command = f"ansible-playbook -i ../ansible/{id}/hosts_rendered.ini ../ansible/{id}/check.yml -CD"
         return run_command(command)
 
 def get_template(id):

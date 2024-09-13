@@ -7,20 +7,15 @@
   - name: Ping Check
     ping:
 
-  - name: General Setup
+  - name: General Setup Check
     pfsensible.core.pfsense_setup:
       hostname: "{{ 'FW-1' if inventory_hostname == 'fw1' else 'FW-2' }}"
       domain: yargu
       dns_addresses: 8.8.8.8
       timezone: Europe/Moscow
 
-  # - name: Admin Password Check
-  #   pfsensible.core.pfsense_user:
-  #     name: admin
-  #     state: present
-  
-  # - name: Interface Check
-  #   pfsensible.core.pfsense_interface:
-  #     interface: em1
-  #     descr: LAN
-  #     ipv4_address: 192.168.100.254
+  - name: Check private and bogon disabled
+    pfsensible.core.pfsense_interface:
+      descr: "{{ 'WAN' if inventory_hostname == 'fw1' else 'DMZ' }}"
+      blockbogons: False
+      blockpriv: False
