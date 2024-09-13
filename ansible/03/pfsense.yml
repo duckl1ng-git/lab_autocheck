@@ -1,0 +1,26 @@
+- name: pfSense Check
+  hosts: fw_1, fw_2
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: General Setup
+    pfsensible.core.pfsense_setup:
+      hostname: FW-1
+      domain: yargu
+      dns_addresses: 8.8.8.8
+      timezone: Europe/Moscow
+
+  # - name: Admin Password Check
+  #   pfsensible.core.pfsense_user:
+  #     name: admin
+  #     state: present
+  
+  # - name: Interface Check
+  #   pfsensible.core.pfsense_interface:
+  #     interface: em1
+  #     descr: LAN
+  #     ipv4_address: 192.168.100.254

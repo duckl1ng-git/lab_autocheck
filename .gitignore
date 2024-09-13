@@ -1,4 +1,6 @@
 .vscode
 labs
-Курсовая_Уткин.docx
-.~lock.*
+report
+ansible/*/hosts_rendered.ini
+web/__pycache__
+TODO.txt

@@ -18,7 +18,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 [Установить](https://www.microsoft.com/ru-ru/download/details.aspx?id=48137) .NET Framework 4.6
 
-Установить [обновление](https://aka.ms/wmf51download) для PowerShell до версии 5.1
+Установить [обновление](https://aka.ms/wmf51download) для PowerShell до версии 5.1 (Win7AndW2K8R2-KB3191566-x64.zip)
 
 Выполнить скрипт как для Windows 10
 
