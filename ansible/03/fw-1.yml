@@ -31,7 +31,6 @@
       ipv4_type: "static"
       ipv4_address: "10.10.10.254"
       ipv4_prefixlen: 24
-      ipv4_gateway: "WANGW"
       blockbogons: False
       blockpriv: False
 
@@ -57,7 +56,7 @@
   - name: LAN Net Alias Check
     pfsensible.core.pfsense_alias:
       name: "LAN_net"
-      desr: "LAN"
+      descr: "LAN"
       type: "network"
       address: 10.10.20.0/24
       state: present
@@ -65,7 +64,7 @@
   - name: DMZ Net Alias Check
     pfsensible.core.pfsense_alias:
       name: "DMZ_net"
-      desr: "DMZ"
+      descr: "DMZ"
       type: "network"
       address: 10.10.10.0/24
       state: present
