@@ -22,14 +22,12 @@
       ipv4_type: "static"
       ipv4_address: "10.10.10.1"
       ipv4_prefixlen: 24
-      ipv4_gateway: "10.10.10.254"
+      ipv4_gateway: "WANGW"
       blockbogons: False
       blockpriv: False
-#    register: wan_cfg
-#    changed_when:
-#      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
 
-  - name: DMZ(LAN) Interface Check
+# TODO: fix problems (...)
+  - name: LAN Interface Check
     pfsensible.core.pfsense_interface:
       interface: "em1"
       descr: "LAN"
@@ -52,6 +50,10 @@
       gateway: "WANGW"
       ipprotocol: "inet"
 
-  - name: Disable NAT Check
-    pfsensible.core.pfsense_nat_outbound:
-      nonat: true
+# Сделать через файл /cf/conf/config.xml
+#<outbound>
+#  <mode>disabled</mode>
+#</outbound>
+#  - name: Disable NAT Check
+#    pfsensible.core.pfsense_nat_outbound:
+#      nonat: true
