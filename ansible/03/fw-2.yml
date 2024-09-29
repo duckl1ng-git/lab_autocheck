@@ -1,4 +1,4 @@
-- name: pfSense Check
+- name: FW-2 Check
   hosts: fw2
   gather_facts: False
 
