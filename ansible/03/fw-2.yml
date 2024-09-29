@@ -11,19 +11,47 @@
     pfsensible.core.pfsense_setup:
       hostname: "FW-2"
       domain: yargu
-      dns_addresses: 8.8.8.8
+      dns_hostnames: 8.8.8.8
       timezone: Europe/Moscow
 
-  - name: Check private ang bogon disabled
+  - name: DMZ(WAN) Interface Check
     pfsensible.core.pfsense_interface:
+      interface: "em0"
+      descr: "DMZ"
+      enable: True
+      ipv4_type: "static"
+      ipv4_address: "10.10.10.1"
+      ipv4_prefixlen: 24
+      ipv4_gateway: "10.10.10.254"
       blockbogons: False
       blockpriv: False
-      descr: "{{ 'WAN' if inventory_hostname == 'fw1' else 'DMZ' }}"
-      interface: 'em0'
-      # Все параметры ниже приходится использовать, т.к. значения по умолчанию этих параметров не соотвествуют проверяемым
-      # Возможно стоит отдельно сделать проверку по каждому интерфейсу
+#    register: wan_cfg
+#    changed_when:
+#      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
+
+  - name: DMZ(LAN) Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em1"
+      descr: "LAN"
       enable: True
-      ipv4_type: "{{ 'dhcp' if inventory_hostname == 'fw1' else 'static' }}"
-      # Два параметра ниже будут использоваться только при 'static'
-      ipv4_address: "{{ fw2_dmz_ip }}"
-      ipv4_gateway: "WANGW"
+      ipv4_type: "static"
+      ipv4_address: "10.10.20.254"
+      ipv4_prefixlen: 24
+      blockbogons: False
+      blockpriv: False
+
+  - name: Gateway Check
+    pfsensible.core.pfsense_gateway:
+      interface: "DMZ"
+      name: "WANGW"
+      gateway: 10.10.10.254
+      descr: "Interface wan Gateway"
+
+  - name: Default Gateway Check
+    pfsensible.core.pfsense_default_gateway:
+      gateway: "WANGW"
+      ipprotocol: "inet"
+
+  - name: Disable NAT Check
+    pfsensible.core.pfsense_nat_outbound:
+      nonat: true
