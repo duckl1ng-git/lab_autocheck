@@ -19,7 +19,7 @@
       interface: "em0"
       descr: "WAN"
       enable: True
-      ipv4_type: "DHCP"
+      ipv4_type: "dhcp"
       blockbogons: False
       blockpriv: False
 
