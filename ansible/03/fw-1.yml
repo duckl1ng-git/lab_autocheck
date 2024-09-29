@@ -70,21 +70,21 @@
       state: present
 
   - name: Allow From LAN Rule Check
-    pfsensible.core.pfsense_alias:
+    pfsensible.core.pfsense_rule:
       name: "Allow from LAN"
       protocol: any
       source: "LAN_net"
       interface: "DMZ"
 
   - name: Allow From DMZ Rule Check
-    pfsensible.core.pfsense_alias:
+    pfsensible.core.pfsense_rule:
       name: "Allow from DMZ"
       protocol: any
       source: "DMZ_net"
       interface: "DMZ"
 
   - name: Other Rules Disabled Check
-    pfsensible.core.pfsense_alias:
+    pfsensible.core.pfsense_rule:
       name: "{{ item }}"
       interface: "DMZ"
     loop:
