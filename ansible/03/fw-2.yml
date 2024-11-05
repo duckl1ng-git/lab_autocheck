@@ -26,7 +26,6 @@
       blockbogons: False
       blockpriv: False
 
-# TODO: fix problems (...)
   - name: LAN Interface Check
     pfsensible.core.pfsense_interface:
       interface: "em1"
@@ -35,8 +34,16 @@
       ipv4_type: "static"
       ipv4_address: "10.10.20.254"
       ipv4_prefixlen: 24
-      blockbogons: False
-      blockpriv: False
+    register: lan_cfg
+
+  - name: Some help
+    debug:
+      msg:
+        - "Please do \"Save -> Apply\" on LAN interface to pass this check!"
+        - "P.S. This happens because after initial setup through CLI, checker can't validate that some values are default."
+        - "If you still see this message, that means there is a mistake in interface configuration."
+        - "{{ lan_cfg }}"
+    when: lan_cfg|lenght != 0
 
   - name: Gateway Check
     pfsensible.core.pfsense_gateway:
@@ -50,10 +57,11 @@
       gateway: "WANGW"
       ipprotocol: "inet"
 
-# Сделать через файл /cf/conf/config.xml
-#<outbound>
-#  <mode>disabled</mode>
-#</outbound>
-#  - name: Disable NAT Check
-#    pfsensible.core.pfsense_nat_outbound:
-#      nonat: true
+  - name: Disable NAT Check
+    shell: |
+      cat /cf/conf/config.xml | grep "<outbound>" -A 2
+    register: cfg
+    check_mode: false
+    changed_when: false
+    failed_when:
+      - "'disabled' not in cfg.stdout_lines[1]"

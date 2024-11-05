@@ -24,9 +24,5 @@ mapping = [
         'fw2_dmz_ip': '',
         'pfsense_user': '',
         'pfsense_pass': '',
-        'win7_dmz_ip': '',
-        'win7_lan_ip': '',
-        'win_user': '',
-        'win_pass': ''
     },
 ]

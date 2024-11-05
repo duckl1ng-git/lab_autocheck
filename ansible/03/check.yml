@@ -1,4 +1,2 @@
-# - import_playbook: pfsense.yml
-# - import_playbook: windows.yml
 - import_playbook: fw-1.yml
 - import_playbook: fw-2.yml

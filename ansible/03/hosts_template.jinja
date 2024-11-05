@@ -1,13 +1,3 @@
-[win]
-win7_dmz ansible_host={{ win7_dmz_ip }}
-win7_lan ansible_host={{ win7_lan_ip }}
-
-[win:vars]
-ansible_user={{ win_user }}
-ansible_password={{ win_pass }}
-ansible_connection=winrm
-ansible_port=5985
-
 [pfsense]
 fw1 ansible_host={{ fw1_dmz_ip }}
 fw2 ansible_host={{ fw2_lan_ip }}
