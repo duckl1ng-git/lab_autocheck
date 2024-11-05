@@ -6,6 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/root/lab_autocheck/web/
+ExecStartPre=git pull
 ExecStart=/root/lab_autocheck/web/.venv/bin/python /root/lab_autocheck/web/app.py
 Restart=always
 
