@@ -60,8 +60,18 @@
   - name: Disable NAT Check
     shell: |
       cat /cf/conf/config.xml | grep "<outbound>" -A 2
-    register: cfg
+    register: nat_outbound
     check_mode: false
     changed_when: false
     failed_when:
-      - "'disabled' not in cfg.stdout_lines[1]"
+      - "'disabled' not in nat_outbound.stdout_lines[1]"
+
+  - name: DHCP Range Check
+    shell: |
+      cat /cf/conf/config.xml | grep "<dhcpd>" -A 8
+    register: dhcpd
+    check_mode: false
+    changed_when: false
+    failed_when:
+      - "'10.10.20.10' not in dhcpd.stdout_lines[4]"
+      - "'10.10.20.100' not in dhcpd.stdout_lines[5]"
