@@ -20,7 +20,7 @@
       descr: "DMZ"
       enable: True
       ipv4_type: "static"
-      ipv4_address: "10.10.10.1"
+      ipv4_address: "{{fw2_dmz_ip}}"
       ipv4_prefixlen: 24
       ipv4_gateway: "WANGW"
       blockbogons: False
@@ -32,7 +32,7 @@
       descr: "LAN"
       enable: True
       ipv4_type: "static"
-      ipv4_address: "10.10.20.254"
+      ipv4_address: "{{fw2_lan_ip}}"
       ipv4_prefixlen: 24
     register: lan_cfg
 
@@ -49,7 +49,7 @@
     pfsensible.core.pfsense_gateway:
       interface: "DMZ"
       name: "WANGW"
-      gateway: 10.10.10.254
+      gateway: "{{fw1_dmz_ip}}"
       descr: "Interface wan Gateway"
 
   - name: Default Gateway Check

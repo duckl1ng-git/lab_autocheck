@@ -32,7 +32,7 @@
       descr: "DMZ"
       enable: True
       ipv4_type: "static"
-      ipv4_address: "10.10.10.254"
+      ipv4_address: "{{fw1_dmz_ip}}"
       ipv4_prefixlen: 24
       blockbogons: False
       blockpriv: False
@@ -41,7 +41,7 @@
     pfsensible.core.pfsense_gateway:
       interface: "DMZ"
       name: "LAN_GW"
-      gateway: 10.10.10.1
+      gateway: "{{fw2_dmz_ip}}"
       descr: "10 to 20"
 
   - name: Default Gateway Check
