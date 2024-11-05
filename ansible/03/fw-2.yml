@@ -43,7 +43,7 @@
         - "P.S. This happens because after initial setup through CLI, checker can't validate that some values are default."
         - "If you still see this message, that means there is a mistake in interface configuration."
         - "{{ lan_cfg }}"
-    when: lan_cfg|lenght != 0
+    when: lan_cfg.commands|length != 0
 
   - name: Gateway Check
     pfsensible.core.pfsense_gateway:
