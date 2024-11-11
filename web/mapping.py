@@ -25,4 +25,15 @@ mapping = [
         'pfsense_user': '',
         'pfsense_pass': '',
     },
+    # 04
+    {
+        'fw1_dmz_ip': '',
+        'fw2_lan_ip': '',
+        'fw2_dmz_ip': '',
+        'pfsense_user': '',
+        'pfsense_pass': '',
+        'kali_ip': '',
+        'kali_user': '',
+        'kali_password': '',
+    },
 ]

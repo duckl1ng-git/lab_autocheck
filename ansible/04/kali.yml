@@ -1,0 +1,38 @@
+- name: LAN-Kali Check
+  hosts: kali
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: tun0 Interface Check
+    shell: ip a | grep tun0 -A 1
+    register: if_tun0
+    failed_when: "'10.0.0.2' not in if_tun0.stdout_lines[1]"
+  
+  - name: Tunnel app is running Check
+    shell: ps x | grep icmptunnel | awk '{print $6}'
+    register: icmp-srv_ip
+    failed_when: icmp-srv_ip|length != 2
+
+  - name: Routes Check
+    shell: ip r
+    register: routes
+    failed_when:
+      - "'default via 10.0.0.1 dev tun0' not in routes.stdout_lines"
+      - "'{{icmp-srv_ip.stdout_lines[0]}} via 10.10.20.254 dev eth0' not in routes.stdout_lines"
+  
+  - name: Ping Google DNS Check
+    shell: ping 8.8.8.8 -c 4
+    register: ping_google
+
+  - name: Ping ICMP-SRV Check
+    shell: ping {{icmp-srv_ip.stdout_lines[0]}} -c 4
+    register: ping_google
+
+  - name: Internet Access Check
+    shell: curl ifconfig.me -v
+    register: result
+    failed_when: result.stdout_lines[0] | regex_search('^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$') | count != 1

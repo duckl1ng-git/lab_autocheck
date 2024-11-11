@@ -25,25 +25,6 @@ def Lab_N(id):
             values[k] = request.form[k]
 
         hosts = template.render(values)
-
-        # hosts = template.render(
-        #     # pfsense_ip = request.form['pfsense_ip'],
-        #     # pfsense_user = request.form['pfsense_user'],
-        #     # pfsense_pass = request.form['pfsense_pass'],
-        #     winsrv_ip = request.form['winsrv_ip'],
-        #     winsrv_user = request.form['d_admin_name'],
-        #     winsrv_pass = request.form['d_admin_pass'],
-        #     win7_ip = request.form['win7_ip'],
-        #     win10_ip = request.form['win10_ip'],
-        #     win_user = request.form['l_admin_name'],
-        #     win_pass = request.form['l_admin_pass'],
-        #     user1 = request.form['user1'],
-        #     pass1 = request.form['pass1'],
-        #     user2 = request.form['user2'],
-        #     pass2 = request.form['pass2'],
-        #     user3 = request.form['user3'],
-        #     pass3 = request.form['pass3'],
-        # )
             
         with open(f'../ansible/{id}/hosts_rendered.ini', 'w+t') as f:
             f.write(hosts)

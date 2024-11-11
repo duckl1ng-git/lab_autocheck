@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab Checker</title>
+</head>
+<body>
+    <h1>ICMP туннелирование</h1>
+    <h3>Укажите требуемые данные в соотвествии с тем, как сделано у Вас.</h3>
+    <p>Обратите внимание, поля уже предзаполнены. Если у Вас такие же значения, менять их не обзятельно.</p>
+    <form method="post" action="/04" target="test_iframe">
+        <input type="hidden" name="lab_id" value="03">
+        
+        <label>FW-1 DMZ IP:</label>
+        <input type="text" name="fw1_dmz_ip" placeholder="PfSense IP" value="10.10.10.254">
+        <br>
+
+        <label>FW-2 DMZ IP:</label>
+        <input type="text" name="fw2_dmz_ip" placeholder="PfSense IP" value="10.10.10.1">
+        <br>
+
+        <label>FW-2 LAN IP:</label>
+        <input type="text" name="fw2_lan_ip" placeholder="PfSense IP" value="10.10.20.254">
+        <br>
+
+        <label>PfSense Admin name:</label>
+        <input type="text" name="pfsense_user" placeholder="PfSense Admin name" value="admin">
+        <br>
+        
+        <label>PfSense Admin password:</label>
+        <input type="text" name="pfsense_pass" placeholder="PfSense Admin password" value="pfsense">
+        <br>
+
+        <label>LAN-Kali IP:</label>
+        <input type="text" name="kali_ip" placeholder="LAN-Kali" value="10.10.20.11">
+        <br>
+
+        <label>LAN-Kali username:</label>
+        <input type="text" name="kali_user" placeholder="LAN-Kali user" value="root">
+        <br>
+
+        <label>LAN-Kali password:</label>
+        <input type="text" name="kali_password" placeholder="LAN-Kali password" value="eve@123">
+        <br>
+
+        <input type="submit" value="Проверить">
+    </form>
+    <hr>
+    <iframe name="test_iframe" width="1000" height="500"></iframe>
+</body>
+</html>
