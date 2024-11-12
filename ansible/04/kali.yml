@@ -33,10 +33,10 @@
       - "'default via 10.0.0.1 dev tun0' not in routes.stdout"
       - "icmp_srv_ip.stdout_lines[0]+' via 10.10.20.254 dev eth0' not in routes.stdout"
   
-  - name: resolve.conf Check
+  - name: resolv.conf Check
     check_mode: False
     changed_when: False
-    shell: cat /etc/resolve.conf
+    shell: cat /etc/resolv.conf
     register: resolv
     failed_when:
       - "'nameserver 8.8.8.8' not in resolv.stdout_lines"
