@@ -33,21 +33,29 @@
       - "'default via 10.0.0.1 dev tun0' not in routes.stdout"
       - "icmp_srv_ip.stdout_lines[0]+' via 10.10.20.254 dev eth0' not in routes.stdout"
   
-  - name: Ping Google DNS Check
+  - name: resolve.conf Check
     check_mode: False
     changed_when: False
-    shell: /bin/bash -c '[ "$(ping 8.8.8.8 -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "online" ] && echo yes || echo no'
-    register: ping_google
+    shell: cat /etc/resolve.conf
+    register: resolv
     failed_when:
-      - "ping_google.stdout == 'no'"
+      - "'nameserver 8.8.8.8' not in resolv.stdout_lines"
 
   - name: Ping ICMP-SRV Check
     check_mode: False
     changed_when: False
-    shell: /bin/bash -c '[ "$(ping {{icmp_srv_ip.stdout_lines[0]}} -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "online" ] && echo yes || echo no'
+    shell: /bin/bash -c '[ "$(ping {{icmp_srv_ip.stdout_lines[0]}} -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
     register: ping_icmp_srv
     failed_when:
       - "ping_icmp_srv.stdout == 'no'"
+
+  - name: Ping Google DNS Check
+    check_mode: False
+    changed_when: False
+    shell: /bin/bash -c '[ "$(ping 8.8.8.8 -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
+    register: ping_google
+    failed_when:
+      - "ping_google.stdout == 'no'"
 
   - name: Internet Access Check
     check_mode: False
