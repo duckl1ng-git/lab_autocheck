@@ -26,6 +26,20 @@
     changed_when: False
     ansible.windows.win_powershell:
       script: |
+        add-type @"
+        using System.Net;
+        using System.Security.Cryptography.X509Certificates;
+        public class TrustAllCertsPolicy : ICertificatePolicy {
+        public bool CheckValidationResult(
+        ServicePoint srvPoint, X509Certificate certificate,
+        WebRequest request, int certificateProblem) {
+        return true;
+        }
+        }
+        "@
+        $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
+        [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
+        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
         try {
             $response = Invoke-WebRequest -Uri "http://188.40.167.82/" -UseBasicParsing -TimeoutSec 5
             if ($response.StatusCode -eq 200) {
