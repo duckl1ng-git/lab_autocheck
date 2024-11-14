@@ -19,7 +19,7 @@
         }
     register: icmp
     failed_when:
-      - "icmp.output = 'no'"
+      - "icmp.output == 'no'"
 
   - name: Internet Access Check
     check_mode: False
@@ -38,4 +38,4 @@
         }
     register: http
     failed_when:
-      - "http.output = 'yes'"
+      - "http.output == 'yes'"
