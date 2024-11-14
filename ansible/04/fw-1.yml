@@ -78,7 +78,7 @@
     changed_when:
       - dmz_alias.commands[0] != "update alias 'DMZ_net' set detail=none"
 
-  - name: Allow From LAN Rule Check
+  - name: Allow From LAN Rule Disabled Check
     pfsensible.core.pfsense_rule:
       name: "Allow from LAN"
       protocol: any
@@ -87,7 +87,7 @@
       interface: "DMZ"
       disabled: true
 
-  - name: Allow From DMZ Rule Check
+  - name: Allow From DMZ Rule Disabled Check
     pfsensible.core.pfsense_rule:
       name: "Allow from DMZ"
       protocol: any

@@ -10,10 +10,20 @@ fw1_dmz_ip={{ fw1_dmz_ip }}
 fw2_dmz_ip={{ fw2_dmz_ip }}
 fw2_lan_ip={{ fw2_lan_ip }}
 
-[kali]
-kali ansible_host={{ kali_ip }}
+[linux]
+lan-kali ansible_host={{ lan_kali_ip }}
+icmp-srv ansible_host={{ icmp_srv_ip}} ansible_ssh_common_args='-o ProxyCommand="sshpass -p {{ linux_password }} ssh -W %h:%p {{ lan_kali_ip }}"'
 
-[kali:vars]
+[linux:vars]
 ansible_connection=ssh
-ansible_user={{ kali_user }}
-ansible_password={{ kali_password }}
+ansible_user={{ linux_user }}
+ansible_password={{ linux_password }}
+
+[windows]
+lan-win7 ansible_host={{ lan_win7_ip }}
+
+[windows:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user={{ windows_user }}
+ansible_password={{ windows_password }}

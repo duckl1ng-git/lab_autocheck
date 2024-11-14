@@ -1,5 +1,5 @@
 - name: LAN-Kali Check
-  hosts: kali
+  hosts: lan-kali
   gather_facts: False
 
   tasks:
@@ -16,7 +16,7 @@
       - if_tun0.stdout_lines|count != 2
       - "'10.0.0.2' not in if_tun0.stdout"
   
-  - name: Tunnel app is running Check
+  - name: Tunnel App Is Running Check
     check_mode: False
     changed_when: False
     shell: ps x | grep icmptunnel | awk '{print $6}'
@@ -60,7 +60,7 @@
   - name: Internet Access Check
     check_mode: False
     changed_when: False
-    shell: curl ifconfig.me -v
+    shell: curl 188.40.167.82 -v
     register: result
     failed_when: 
       - "result.stdout | regex_search('^([0-9]+.[0-9]+.[0-9]+.[0-9]+)$') == ''"

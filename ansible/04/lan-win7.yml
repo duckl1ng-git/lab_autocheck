@@ -1,0 +1,41 @@
+- name: ICMP-SRV Check
+  hosts: lan-win7
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    win_ping:
+
+  - name: Ping Google DNS Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        if (Test-Connection -ComputerName 8.8.8.8 -Count 4 -Quiet) {
+            Write-Output "yes"
+        } else {
+            Write-Output "no"
+        }
+    resiter: icmp
+    failed_when:
+      - "icmp = 'no'"
+
+  - name: Internet Access Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        try {
+            $response = Invoke-WebRequest -Uri "http://188.40.167.82/" -UseBasicParsing -TimeoutSec 5
+            if ($response.StatusCode -eq 200) {
+                Write-Output "yes"
+            } else {
+                Write-Output "no"
+            }
+        } catch {
+            Write-Output "no"
+        }
+    resiter: http
+    failed_when:
+      - "http = 'yes'"

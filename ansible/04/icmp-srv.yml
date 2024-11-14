@@ -1,0 +1,36 @@
+- name: ICMP-SRV Check
+  hosts: icmp-srv
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: tun0 Interface Check
+    check_mode: False
+    changed_when: False
+    shell: ip a | grep tun0
+    register: if_tun0
+    failed_when: 
+      - if_tun0.stdout_lines|count != 2
+      - "'10.0.0.1' not in if_tun0.stdout"
+  
+  - name: Tunnel App Is Running Check
+    check_mode: False
+    changed_when: False
+    shell: ps x | grep icmptunnel | awk '{print $6}'
+    register: icmp_srv_ip
+    failed_when: 
+      - icmp_srv_ip.stdout_lines|count != 3
+
+  - name: IPTABLES Check
+    check_mode: False
+    changed_when: False
+    shell: iptables -t nat -L POSTROUTING -v -n
+    register: iptables
+    failed_when:
+      - iptables.stdout_lines|count != 2
+      - "'MASQUERADE' not in iptables.stdout"
+      - "'ens' not in iptables.stdout"
+      - "'10.0.0.0/24' not in iptables.stdout"
