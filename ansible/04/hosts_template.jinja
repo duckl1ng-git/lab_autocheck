@@ -12,7 +12,7 @@ fw2_lan_ip={{ fw2_lan_ip }}
 
 [linux]
 lan-kali ansible_host={{ lan_kali_ip }}
-icmp-srv ansible_host={{ icmp_srv_ip}} ansible_ssh_common_args='-o ProxyCommand="sshpass -p {{ linux_password }} ssh -W %h:%p {{ lan_kali_ip }}"'
+icmp-srv ansible_host=10.0.0.1 ansible_ssh_common_args='-o ProxyCommand="sshpass -p {{ linux_password }} ssh -W %h:%p {{ lan_kali_ip }}"'
 
 [linux:vars]
 ansible_connection=ssh

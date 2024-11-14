@@ -17,7 +17,7 @@
         } else {
             Write-Output "no"
         }
-    resiter: icmp
+    register: icmp
     failed_when:
       - "icmp = 'no'"
 
@@ -36,6 +36,6 @@
         } catch {
             Write-Output "no"
         }
-    resiter: http
+    register: http
     failed_when:
       - "http = 'yes'"
