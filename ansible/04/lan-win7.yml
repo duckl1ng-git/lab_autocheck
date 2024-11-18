@@ -7,7 +7,7 @@
   - name: Ping Check
     win_ping:
 
-  - name: Ping Google DNS Check
+  - name: ICMP Check
     check_mode: False
     changed_when: False
     ansible.windows.win_powershell:
@@ -21,7 +21,7 @@
     failed_when:
       - "icmp.output[0] == 'no'"
 
-  - name: Internet Access Check
+  - name: HTTP Check
     check_mode: False
     changed_when: False
     ansible.windows.win_uri:
@@ -32,3 +32,13 @@
     register: http
     failed_when:
       - "http.status_code != none"
+
+  - name: DNS Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        nslookup ya.ru
+    register: dns
+    failed_when:
+      - "'DNS request timed out.' in dns.output"
