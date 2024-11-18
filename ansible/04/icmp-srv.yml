@@ -34,3 +34,11 @@
       - "'MASQUERADE' not in iptables.stdout"
       - "'ens' not in iptables.stdout"
       - "'10.0.0.0/24' not in iptables.stdout"
+  
+  - name: IP Forward Check
+    check_mode: False
+    changed_when: False
+    shell: sysctl -p
+    register: sysctl
+    failed_when:
+      - "'net.ipv4.ip_forward = 1' not in sysctl.stdout_lines"
