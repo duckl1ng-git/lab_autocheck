@@ -41,4 +41,4 @@
         nslookup ya.ru
     register: dns
     failed_when:
-      - "'DNS request timed out.' in dns.output"
+      - "'DNS request timed out.' not in dns.output"
