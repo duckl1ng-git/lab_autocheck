@@ -44,10 +44,10 @@
   - name: Resolv Check
     check_mode: False
     changed_when: False
-    shell: /bin/bash -c '[ "$(nslookup dns.yargu.hack -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
-    register: ping_icmp_srv
+    shell: /bin/bash -c '[ "$(nslookup dns.yargu.hack >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
+    register: resolv
     failed_when:
-      - "ping_icmp_srv.stdout == 'no'"
+      - "resolv.stdout == 'no'"
 
   - name: Ping Google DNS Check
     check_mode: False
