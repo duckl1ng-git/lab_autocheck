@@ -20,9 +20,9 @@
     check_mode: False
     changed_when: False
     shell: ps x | grep iodine | awk '{print $7}'
-    register: dns_srv_dns
+    register: app
     failed_when: 
-      - dns_srv_dns.stdout_lines|count != 3
+      - app.stdout_lines|count != 3
       - "'tun.yargu.hack' not in app.stdout"
 
   - name: Routes Check
