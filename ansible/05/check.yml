@@ -3,4 +3,4 @@
 - import_playbook: lan-kali.yml
 - import_playbook: dns-srv.yml
 - import_playbook: lan-win7.yml
-- import_playbool: lan-win-dns.yml
+- import_playbool: lan-dns-srv.yml
