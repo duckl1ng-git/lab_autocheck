@@ -53,8 +53,10 @@ mapping = [
         'linux_user': '',
         'linux_password': '',
         'lan_win7_ip': '',
-        'lan_dns_srv_ip': '',
         'windows_user': '',
         'windows_password': '',
+        'lan_dns_srv_ip': '',
+        'windows_server_user': '',
+        'windows_server_password': '',
     },
 ]
