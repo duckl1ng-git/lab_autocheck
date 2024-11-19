@@ -1,0 +1,123 @@
+- name: FW-1 Check
+  hosts: fw1
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: General Setup Check
+    pfsensible.core.pfsense_setup:
+      hostname: "FW-1"
+      domain: "yargu"
+      dns_hostnames: 8.8.8.8
+      timezone: Europe/Moscow
+
+  - name: WAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em0"
+      descr: "WAN"
+      enable: True
+      ipv4_type: "dhcp"
+      blockbogons: False
+      blockpriv: False
+    register: wan_cfg
+    changed_when:
+      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
+
+  - name: DMZ(LAN) Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em1"
+      descr: "DMZ"
+      enable: True
+      ipv4_type: "static"
+      ipv4_address: "{{fw1_dmz_ip}}"
+      ipv4_prefixlen: 24
+      blockbogons: False
+      blockpriv: False
+
+  - name: Gateway Check
+    pfsensible.core.pfsense_gateway:
+      interface: "DMZ"
+      name: "LAN_GW"
+      gateway: "{{fw2_dmz_ip}}"
+      descr: "10 to 20"
+
+  - name: Default Gateway Check
+    pfsensible.core.pfsense_default_gateway:
+      gateway: "WAN_DHCP"
+      ipprotocol: "inet"
+
+  - name: Static Route Check
+    pfsensible.core.pfsense_route:
+      descr: "10 to 20"
+      gateway: "LAN_GW"
+      network: 10.10.20.0/24
+      state: present
+
+  - name: LAN Net Alias Check
+    pfsensible.core.pfsense_alias:
+      name: "LAN_net"
+      descr: "LAN"
+      type: "network"
+      address: 10.10.20.0/24
+      state: present
+    register: lan_alias
+    changed_when:
+      - lan_alias.commands[0] != "update alias 'LAN_net' set detail=none"
+
+  - name: DMZ Net Alias Check
+    pfsensible.core.pfsense_alias:
+      name: "DMZ_net"
+      descr: "DMZ"
+      type: "network"
+      address: 10.10.10.0/24
+      state: present
+    register: dmz_alias
+    changed_when:
+      - dmz_alias.commands[0] != "update alias 'DMZ_net' set detail=none"
+
+  - name: Allow From LAN Rule Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow from LAN"
+      protocol: any
+      source: "LAN_net"
+      destination: any
+      interface: "DMZ"
+      disabled: true
+
+  - name: Allow From DMZ Rule Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow from DMZ"
+      protocol: any
+      source: "DMZ_net"
+      destination: any
+      interface: "DMZ"
+      disabled: true
+
+  - name: Allow DNS Rule Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow DNS"
+      protocol: tcp/udp
+      source: 10.10.20.1
+      destination: any
+      destination_port: 53
+      interface: "DMZ"
+
+  - name: Other Rules Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "{{ item }}"
+      interface: "DMZ"
+      disabled: true
+      source: "NET:DMZ"
+      destination: any
+      ipprotocol: "{{ 'inet6' if 'IPv6' in item else 'inet' }}"
+    register: default_rule
+    changed_when:
+      - default_rule.commands[0] != "update rule '{{item}}' on 'DMZ' set statetype='keep state'"
+    loop:
+      - "Default allow LAN to any rule"
+      - "Default allow LAN IPv6 to any rule"
+    loop_control:
+      label: "{{ item }}"

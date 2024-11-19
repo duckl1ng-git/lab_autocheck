@@ -1,0 +1,66 @@
+- name: LAN-Kali Check
+  hosts: lan-kali
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: dns0 Interface Check
+    check_mode: False
+    changed_when: False
+    shell: ip a | grep dns0
+    register: if_dns0
+    failed_when: 
+      - if_dns0.stdout_lines|count != 2
+      - "'10.99.99.2' not in if_dns0.stdout"
+  
+  - name: Tunnel App Is Running Check
+    check_mode: False
+    changed_when: False
+    shell: ps x | grep iodine | awk '{print $7}'
+    register: dns_srv_dns
+    failed_when: 
+      - dns_srv_dns.stdout_lines|count != 3
+      - "'tun.yargu.hack' not in app.stdout"
+
+  - name: Routes Check
+    check_mode: False
+    changed_when: False
+    shell: ip r
+    register: routes
+    failed_when:
+      - "'default via 10.99.99.1 dev dns0' not in routes.stdout"
+  
+  - name: resolv.conf Check
+    check_mode: False
+    changed_when: False
+    shell: cat /etc/resolv.conf
+    register: resolv
+    failed_when:
+      - "'nameserver 10.10.20.1' not in resolv.stdout_lines"
+
+  - name: Resolv Check
+    check_mode: False
+    changed_when: False
+    shell: /bin/bash -c '[ "$(nslookup dns.yargu.hack -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
+    register: ping_icmp_srv
+    failed_when:
+      - "ping_icmp_srv.stdout == 'no'"
+
+  - name: Ping Google DNS Check
+    check_mode: False
+    changed_when: False
+    shell: /bin/bash -c '[ "$(ping 8.8.8.8 -c 4 >/dev/null 2>&1 && echo good || echo bad)" = "good" ] && echo yes || echo no'
+    register: ping_google
+    failed_when:
+      - "ping_google.stdout == 'no'"
+
+  - name: Internet Access Check
+    check_mode: False
+    changed_when: False
+    shell: curl 188.40.167.82 -v
+    register: result
+    failed_when: 
+      - "result.stdout | regex_search('^([0-9]+.[0-9]+.[0-9]+.[0-9]+)$') == ''"

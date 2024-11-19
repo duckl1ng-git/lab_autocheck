@@ -1,0 +1,45 @@
+- name: DNS-SRV Check
+  hosts: dns-srv
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: dns0 Interface Check
+    check_mode: False
+    changed_when: False
+    shell: ip a | grep dns0
+    register: if_dns0
+    failed_when: 
+      - if_dns0.stdout_lines|count != 2
+      - "'10.99.99.1' not in if_dns0.stdout"
+  
+  - name: Tunnel App Is Running Check
+    check_mode: False
+    changed_when: False
+    shell: ps x | grep iodine | awk '{print $10}'
+    register: app
+    failed_when: 
+      - app.stdout_lines|count != 2
+      - "'tun.yargu.hack' not in app.stdout"
+
+  - name: IPTABLES Check
+    check_mode: False
+    changed_when: False
+    shell: iptables -t nat -L POSTROUTING -v -n
+    register: iptables
+    failed_when:
+      - iptables.stdout_lines|count != 2
+      - "'MASQUERADE' not in iptables.stdout"
+      - "'ens3' not in iptables.stdout"
+      - "'10.99.99.0/24' not in iptables.stdout"
+  
+  - name: IP Forward Check
+    check_mode: False
+    changed_when: False
+    shell: sysctl -p
+    register: sysctl
+    failed_when:
+      - "'net.ipv4.ip_forward = 1' not in sysctl.stdout_lines"

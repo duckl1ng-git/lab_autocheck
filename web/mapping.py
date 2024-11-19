@@ -42,4 +42,19 @@ mapping = [
         'windows_user': '',
         'windows_password': '',
     },
+    # 04
+    {
+        'fw1_dmz_ip': '',
+        'fw2_lan_ip': '',
+        'fw2_dmz_ip': '',
+        'pfsense_user': '',
+        'pfsense_pass': '',
+        'lan_kali_ip': '',
+        'linux_user': '',
+        'linux_password': '',
+        'lan_win7_ip': '',
+        'lan_dns_srv_ip': '',
+        'windows_user': '',
+        'windows_password': '',
+    },
 ]
