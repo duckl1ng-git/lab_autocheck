@@ -29,7 +29,7 @@ ansible_user={{ windows_user }}
 ansible_password={{ windows_password }}
 
 [windows_server]
-lan-dns-srv ansible_host={{ lan_dns_srv_ip }}
+lan-win-dns ansible_host={{ lan_win_dns_ip }}
 
 [windows_server:vars]
 ansible_connection=winrm

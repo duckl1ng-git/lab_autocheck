@@ -55,7 +55,7 @@ mapping = [
         'lan_win7_ip': '',
         'windows_user': '',
         'windows_password': '',
-        'lan_dns_srv_ip': '',
+        'lan_win_dns_ip': '',
         'windows_server_user': '',
         'windows_server_password': '',
     },

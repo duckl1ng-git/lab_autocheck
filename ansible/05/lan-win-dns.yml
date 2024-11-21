@@ -1,0 +1,74 @@
+- name: LAN-WIN-DNS Check
+  hosts: lan-win-dns
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    win_ping:
+
+  - name: ICMP Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        if (Test-Connection -ComputerName 8.8.8.8 -Count 4 -Quiet) {
+            Write-Output "yes"
+        } else {
+            Write-Output "no"
+        }
+    register: icmp
+    failed_when:
+      - "icmp.output[0] == 'yes'"
+
+  - name: HTTP Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_uri:
+      url: http://188.40.167.82/
+      method: GET
+      timeout: 10
+      validate_certs: no
+    register: http
+    failed_when:
+      - "http.status_code != none"
+
+  - name: DNS Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        nslookup ya.ru
+    register: dns
+    failed_when:
+      - "'DNS request timed out.' in dns.output"
+  
+  - name: Primary DNS Zone Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerZone -Name "hack"
+    register: zone
+    failed_when:
+      - "'Primary' not in zone.output"
+
+  - name: DNS A Record Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerResourceRecord -ZoneName "hack" -RRType A
+    register: a_record
+    failed_when:
+      - "'dns' not in a_record.output"
+  
+  - name: DNS Delegation (NS Record) Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerResourceRecord -ZoneName "hack" -RRType NS
+    register: ns_record
+    failed_when:
+      - "'yargu' not in ns_record.output"
