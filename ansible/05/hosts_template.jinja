@@ -30,6 +30,7 @@ ansible_password={{ windows_password }}
 
 [windows_server]
 lan-win-dns ansible_host={{ lan_win_dns_ip }}
+wan-win-dns ansible_host=localhost wan_win_dns_ip={{ wan_win_dns_ip }}
 
 [windows_server:vars]
 ansible_connection=winrm

@@ -1,0 +1,54 @@
+- name: WAN-WIN-DNS Check
+  hosts: wan-win-dns
+  gather_facts: False
+
+  tasks:
+
+  - name: SSH Tunnel to WAN-WIN-DNS
+    changed_when: False
+    check_mode: False
+    delegate_to: localhost
+    async: 100
+    poll: 0
+    shell: "sshpass -p {{ hostvars['lan-kali'].ansible_password }} ssh -N -L 0.0.0.0:5985:{{ wan_win_dns_ip }}:5985 {{ hostvars['lan-kali'].ansible_user }}@{{ hostvars['lan-kali'].ansible_host }}"
+
+  - name: Delay
+    changed_when: False
+    check_mode: False
+    delegate_to: localhost
+    shell: sleep 2
+
+  - name: Ping Check
+    win_ping:
+  
+  - name: Primary DNS Zone Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerZone -Name "yargu.hack"
+    register: zone
+    failed_when:
+      - "zone.output[0].ZoneName != 'yargu.hack'"
+      - "zone.output[0].ZoneType != 'Primary'"
+
+  - name: DNS A Record Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerResourceRecord -ZoneName "yargu.hack" -RRType A
+    register: a_record
+    failed_when:
+      - "a_record.output[0].RecordData.IPv4Address != wan_win_dns_ip"
+      - "a_record.output[1].HostName != 'dns'"
+  
+  - name: DNS Delegation (NS Record) Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-DnsServerResourceRecord -ZoneName "yargu.hack" -RRType NS
+    register: ns_record
+    failed_when:
+      - "ns_record.output[1].HostName != 'tun'"

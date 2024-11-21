@@ -4,3 +4,4 @@
 - import_playbook: dns-srv.yml
 - import_playbook: lan-win7.yml
 - import_playbook: lan-win-dns.yml
+- import_playbook: wan-win-dns.yml
