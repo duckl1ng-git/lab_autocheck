@@ -51,7 +51,8 @@
         Get-DnsServerZone -Name "hack"
     register: zone
     failed_when:
-      - "'Primary' not in zone.output"
+      - "zone.output[0].ZoneName != 'hack'"
+      - "zone.output[0].ZoneType != 'Primary'"
 
   - name: DNS A Record Check
     check_mode: False
@@ -61,7 +62,7 @@
         Get-DnsServerResourceRecord -ZoneName "hack" -RRType A
     register: a_record
     failed_when:
-      - "'dns' not in a_record.output"
+      - "a_record.output[0].HostName != 'dns'"
   
   - name: DNS Delegation (NS Record) Check
     check_mode: False
@@ -71,4 +72,4 @@
         Get-DnsServerResourceRecord -ZoneName "hack" -RRType NS
     register: ns_record
     failed_when:
-      - "'yargu' not in ns_record.output"
+      - "ns_record.output[1].HostName != 'yargu'"
