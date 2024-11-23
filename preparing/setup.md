@@ -26,7 +26,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 
 ```bash
 apt update
-apt install -y git ansible sshpass python3-venv
+apt install -y git ansible sshpass python3-venv curl
 git clone https://github.com/duckl1ng-git/lab_autocheck.git
 cd lab_autocheck/ansible
 ansible-galaxy collection install pfsensible.core -p ./collections
