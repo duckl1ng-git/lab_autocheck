@@ -10,7 +10,7 @@
   - name: General Setup Check
     pfsensible.core.pfsense_setup:
       hostname: "FW-1"
-      domain: "yargu"
+      domain: "yargu.local"
       dns_hostnames: 8.8.8.8
       timezone: Europe/Moscow
 
