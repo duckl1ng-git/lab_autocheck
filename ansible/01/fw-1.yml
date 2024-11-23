@@ -1,5 +1,5 @@
 - name: FW-1 Check
-  hosts: fw1
+  hosts: fw-1
   gather_facts: False
 
   tasks:

@@ -8,7 +8,7 @@
     win_ping:
 
   - name: Domain Member Check
-    changed_when: flase
+    changed_when: False
     ansible.windows.win_powershell:
       script: |
         (gwmi win32_computersystem).partofdomain
@@ -22,7 +22,7 @@
       msg: Domain name is {{ domain.output[1] }}
 
   - name: Domain Users Check
-    changed_when: flase
+    changed_when: False
     when: inventory_hostname in groups['win']
     ansible.windows.win_powershell:
       script: |
@@ -47,7 +47,7 @@
       label: "{{ item.item.username }}"
 
   - name: DisableCMD / DisableRegistry GPO Check
-    changed_when: flase
+    changed_when: False
     when: inventory_hostname in groups['win']
     ansible.windows.win_powershell:
       script: |
@@ -76,7 +76,7 @@
       label: "{{ item.item }}"
 
   - name: Firefox Disallow GPO Check
-    changed_when: flase
+    changed_when: False
     when: inventory_hostname in groups['win']
     ansible.windows.win_powershell:
       script: |
