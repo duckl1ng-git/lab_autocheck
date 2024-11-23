@@ -96,14 +96,28 @@
     
   - name: Print Firefox Disallow GPO Check Result
     when: inventory_hostname in groups['win']
-    vars:
-      codes_str: "{{ gpresult_2.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
-      codes: "{{ codes_str.split(', ') | map('int') | list }}"
-      filtered_codes: "{{ codes | reject('equalto', 0) | list }}"
-      result_string: "{{ filtered_codes | map('chr') | join('') }}"
     debug:
       msg:
         - "{{ gpresult_2.output[0].Context.PreContext }}"
         - "{{ gpresult_2.output[0].Line }}"
         - "{{ gpresult_2.output[0].Context.PostContext }}"
-        - "Path: {{ result_string }}"
+
+  - name: Get Firefox Disallow GPO Path Value
+    check_mode: False
+    changed_when: False
+    when: inventory_hostname in groups['win']
+    vars:
+      codes_str: "{{ gpresult_2.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
+      codes: "{{ codes_str.split(', ') | map('int') | list }}"
+      filtered_codes: "{{ codes | reject('equalto', 0) | list }}"
+    ansible.windows.win_powershell:
+      script: |
+        $codes = @({{ ffiltered_codes | join(', ')  }})
+        $result = -join ($codes | ForEach-Object { [char]$_ })
+        Write-Output $result
+    register: result
+  
+  - name: Print Firefox Disallow GPO Path Value
+    when: inventory_hostname in groups['win']
+    debug:
+      msg: "{{ result.output }}"
