@@ -112,7 +112,7 @@
       filtered_codes: "{{ codes | reject('equalto', 0) | list }}"
     ansible.windows.win_powershell:
       script: |
-        $codes = @({{ ffiltered_codes | join(', ')  }})
+        $codes = @({{ filtered_codes | join(', ')  }})
         $result = -join ($codes | ForEach-Object { [char]$_ })
         Write-Output $result
     register: result
