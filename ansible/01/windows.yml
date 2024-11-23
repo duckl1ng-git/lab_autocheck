@@ -107,7 +107,7 @@
     changed_when: False
     when: inventory_hostname in groups['win']
     vars:
-      codes_str: "{{ gpresult_2.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
+      codes_str: "{{ gpresult_2.output[0].Context.PostContext | regex_search('Value:\\s+(.*?)\\s+State:', '\\1') }}"
       codes: "{{ codes_str.split(', ') | map('int') | list }}"
       filtered_codes: "{{ codes | reject('equalto', 0) | list }}"
     ansible.windows.win_powershell:
