@@ -97,16 +97,13 @@
   - name: Print Firefox Disallow GPO Check Result
     when: inventory_hostname in groups['win']
     vars:
-      codes_str: "{{ item.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
+      codes_str: "{{ gpresult_2.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
       codes: "{{ codes_str.split(', ') | map('int') | list }}"
       filtered_codes: "{{ codes | reject('equalto', 0) | list }}"
       result_string: "{{ filtered_codes | map('chr') | join('') }}"
     debug:
       msg:
-        - "{{ item.output[0].Context.PreContext }}"
-        - "{{ item.output[0].Line }}"
-        - "{{ item.output[0].Context.PostContext }}"
+        - "{{ gpresult_2.output[0].Context.PreContext }}"
+        - "{{ gpresult_2.output[0].Line }}"
+        - "{{ gpresult_2.output[0].Context.PostContext }}"
         - "Path: {{ result_string }}"
-    loop: "{{ gpresult_2.results }}"
-    loop_control:
-      label: "{{ item.item }}"
