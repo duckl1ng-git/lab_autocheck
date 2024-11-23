@@ -1,0 +1,58 @@
+- name: FW-1 Check
+  hosts: fw1
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: General Setup Check
+    pfsensible.core.pfsense_setup:
+      hostname: "FW-1"
+      domain: "yargu"
+      dns_hostnames: 8.8.8.8
+      timezone: Europe/Moscow
+
+  - name: WAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em0"
+      descr: "WAN"
+      enable: True
+      ipv4_type: "dhcp"
+      blockbogons: False
+      blockpriv: False
+    register: wan_cfg
+    changed_when:
+      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
+
+  - name: LAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em1"
+      descr: "LAN"
+      enable: True
+      ipv4_type: "static"
+      ipv4_address: "{{ fw1_lan_ip }}"
+      ipv4_prefixlen: 24
+    register: lan_cfg
+
+  - name: Some help
+    debug:
+      msg:
+        - "Please do \"Save -> Apply\" on LAN interface to pass this check!"
+        - "P.S. This happens because after initial setup through CLI, checker can't validate that some values are default."
+        - "If you still see this message, that means there is a mistake in interface configuration."
+        - "{{ lan_cfg }}"
+    when: lan_cfg.commands|length != 0
+
+  - name: DHCP Range and DNS Servers Check
+    shell: |
+      cat /cf/conf/config.xml | grep "<dhcpd>" -A 12
+    register: dhcpd
+    check_mode: false
+    changed_when: false
+    failed_when:
+      - "'10.10.10.10' not in dhcpd.stdout_lines[4]"
+      - "'10.10.10.100' not in dhcpd.stdout_lines[5]"
+      - "'10.10.10.1' not in dhcpd.stdout_lines[11]"
+      - "'8.8.8.8' not in dhcpd.stdout_lines[12]"

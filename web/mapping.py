@@ -1,6 +1,9 @@
 mapping = [
-    # 01
+    # 01 Windows
     {
+        'fw1_lan_ip': '',
+        'pfsense_user': '',
+        'pfsense_pass': '',
         'winsrv_ip': '',
         'winsrv_user': '',
         'winsrv_pass': '',
@@ -12,12 +15,10 @@ mapping = [
         'pass1': '',
         'user2': '',
         'pass2': '',
-        'user3': '',
-        'pass3': '',
     },
-    # 02
+    # 02 Windows Monitoring
     {},
-    # 03
+    # 03 PfSense Base Scheme
     {
         'fw1_dmz_ip': '',
         'fw2_lan_ip': '',
@@ -28,7 +29,7 @@ mapping = [
         'windows_user': '',
         'windows_password': '',
     },
-    # 04
+    # 04 ICMP Tunnel
     {
         'fw1_dmz_ip': '',
         'fw2_lan_ip': '',
@@ -42,7 +43,7 @@ mapping = [
         'windows_user': '',
         'windows_password': '',
     },
-    # 04
+    # 05 DNS Tunnel
     {
         'fw1_dmz_ip': '',
         'fw2_lan_ip': '',

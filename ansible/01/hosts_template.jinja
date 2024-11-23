@@ -22,12 +22,12 @@ ansible_connection=winrm
 ansible_port=5985
 domain_admin_user={{ winsrv_user }}
 domain_admin_pass={{ winsrv_pass }}
-domain_users="[ { 'username': '{{ user1 }}', 'password': '{{ pass1 }}' }, { 'username': '{{ user2 }}', 'password': '{{ pass2 }}' }, { 'username': '{{ user3 }}', 'password': '{{ pass3 }}' } ]"
+domain_users="[ { 'username': '{{ user1 }}', 'password': '{{ pass1 }}' }, { 'username': '{{ user2 }}', 'password': '{{ pass2 }}' } ]"
 
-; [pfsense]
-; pfsense ansible_host={{ pfsense_ip }}
-; 
-; [pfsense:vars]
-; ansible_connection=ssh
-; ansible_user={{ pfsense_user }}
-; ansible_password={{ pfsense_pass }}
+[pfsense]
+fw-1 ansible_host={{ fw1_lan_ip }}
+
+[pfsense:vars]
+ansible_connection=ssh
+ansible_user={{ pfsense_user }}
+ansible_password={{ pfsense_pass }}
