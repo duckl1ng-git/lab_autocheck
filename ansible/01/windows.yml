@@ -55,26 +55,26 @@
     ansible.windows.win_powershell:
       script: |
         gpresult /Z | Select-String "{{ item }}" -Context 1,2
-    register: gpresult
+    register: gpresult_1
     vars:
       ansible_become: true
       ansible_become_method: runas
       ansible_become_user: "{{ domain.output[1] }}\\{{ domain_users[0].username }}"
       ansible_become_password: "{{ domain_users[0].password }}"
     failed_when:
-      - "'disabled' in gpresult.output[0].Context.PostContext"
+      - "'disabled' in gpresult_1.output[0].Context.PostContext"
     loop:
       - DisableCMD
       - DisableRegistry
     
-  - name: Print GPO Check Result
+  - name: Print DisableCMD / DisableRegistry GPO Check Result
     when: inventory_hostname in groups['win']
     debug:
       msg:
         - "{{ item.output[0].Context.PreContext }}"
         - "{{ item.output[0].Line }}"
         - "{{ item.output[0].Context.PostContext }}"
-    loop: "{{ gpresult.results }}"
+    loop: "{{ gpresult_1.results }}"
     loop_control:
       label: "{{ item.item }}"
 
@@ -85,16 +85,16 @@
     ansible.windows.win_powershell:
       script: |
         gpresult /Z | Select-String "ItemData" -Context 1,2
-    register: gpresult
+    register: gpresult_2
     vars:
       ansible_become: true
       ansible_become_method: runas
       ansible_become_user: "{{ domain.output[1] }}\\{{ domain_users[1].username }}"
       ansible_become_password: "{{ domain_users[1].password }}"
     failed_when:
-      - "'disabled' in gpresult.output[0].Context.PostContext"
+      - "'disabled' in gpresult_2.output[0].Context.PostContext"
     
-  - name: Print GPO Check Result
+  - name: Print Firefox Disallow GPO Check Result
     when: inventory_hostname in groups['win']
     vars:
       codes_str: "{{ item.output[0].Context.PostContext | regex_search('\\[(.*)\\]', '\\1') }}"
@@ -107,6 +107,6 @@
         - "{{ item.output[0].Line }}"
         - "{{ item.output[0].Context.PostContext }}"
         - "Path: {{ result_string }}"
-    loop: "{{ gpresult.results }}"
+    loop: "{{ gpresult_2.results }}"
     loop_control:
       label: "{{ item.item }}"

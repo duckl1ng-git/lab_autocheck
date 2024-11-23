@@ -22,7 +22,7 @@ ansible_connection=winrm
 ansible_port=5985
 domain_admin_user={{ winsrv_user }}
 domain_admin_pass={{ winsrv_pass }}
-domain_users="[ { 'username': '{{ user1 }}', 'password': '{{ pass1 }}' }, { 'username': '{{ user2 }}', 'password': '{{ pass2 }}' } ]"
+domain_users=[ { 'username': '{{ user1 }}', 'password': '{{ pass1 }}' }, { 'username': '{{ user2 }}', 'password': '{{ pass2 }}' } ]
 
 [pfsense]
 fw-1 ansible_host={{ fw1_lan_ip }}
