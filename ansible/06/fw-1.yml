@@ -194,7 +194,8 @@
     failed_when:
       - "'<interface>l2tp</interface>' not in rules.stdout_lines"
       - "'<type>pass</type>' not in rules.stdout_lines"
-      - "'<any/>' not in rules.stdout"
+      - "'<source>\n\t\t\t\t<any/>\n\t\t\t</source>' not in rules.stdout"
+      - "'<destination>\n\t\t\t\t<any/>\n\t\t\t</destination>' not in rules.stdout"
       - "'<descr><![CDATA[L2TP Rule]]></descr>' not in rules.stdout"
   
   - name: Debug
