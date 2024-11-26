@@ -184,7 +184,6 @@
       destination_port: 1701
       interface: "WAN"
 
-  # TODO
   - name: L2TP Rule Check
     check_mode: False
     changed_when: False
@@ -197,8 +196,3 @@
       - "'<source>\n\t\t\t\t<any/>\n\t\t\t</source>' not in rules.stdout"
       - "'<destination>\n\t\t\t\t<any/>\n\t\t\t</destination>' not in rules.stdout"
       - "'<descr><![CDATA[L2TP Rule]]></descr>' not in rules.stdout"
-  
-  - name: Debug
-    debug:
-      msg:
-        - "{{ rules }}"
