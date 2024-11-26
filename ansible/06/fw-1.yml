@@ -66,14 +66,13 @@
     changed_when:
       - lan_alias.commands[0] != "update alias 'LAN_net' set detail=none"
 
-  - name: Allow From LAN Rule Disabled Check
+  - name: Allow From LAN Rule Check
     pfsensible.core.pfsense_rule:
       name: "Allow from LAN"
       protocol: any
       source: "LAN_net"
       destination: any
       interface: "LAN"
-      disabled: true
 
   - name: Other Rules Disabled Check
     pfsensible.core.pfsense_rule:
@@ -167,26 +166,38 @@
     failed_when:
       - "'<pre-shared-key>eve@123</pre-shared-key>' != ipsec_psk.stdout"
 
-  # TODO
   - name: IPSec Rule Check
     pfsensible.core.pfsense_rule:
+      name: "IPSec Rule"
       protocol: udp
-      source: 10.10.20.1
+      source: any
       source_port: 1701
-      destination: "WAN_address"
-      destination_port: any
+      destination: "IP:WAN"
       interface: "IPSec"
 
-  # TODO
   - name: WAN Rule Check
     pfsensible.core.pfsense_rule:
+      name: "WAN Rule"
       protocol: udp
-      destination: "WAN_address"
+      source: any
+      destination: "IP:WAN"
       destination_port: 1701
       interface: "WAN"
 
   # TODO
   - name: L2TP Rule Check
-    pfsensible.core.pfsense_rule:
-      protocol: any
-      interface: "L2TP VPN"
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/filter/rule/*' /cf/conf/config.xml | grep "l2tp" -B 3 -A 25
+    register: rules
+    failed_when:
+      - "'<interface>l2tp</interface>' not in rules.stdout_lines"
+      - "'<type>pass</type>' not in rules.stdout_lines"
+      - "'<any/>' not in rules.stdout"
+      - "'<descr><![CDATA[L2TP Rule]]></descr>' not in rules.stdout"
+  
+  - name: Debug
+    debug:
+      msg:
+        - "{{ rules }}"
