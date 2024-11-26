@@ -61,4 +61,17 @@ mapping = [
         'windows_server_user': '',
         'windows_server_password': '',
     },
+    # 06 VPN PfSense
+    {
+        'fw1_lan_ip': '',
+        'pfsense_user': '',
+        'pfsense_pass': '',
+        'wan_win7_ip': '',
+        'wan_win10_ip': '',
+        'windows_user': '',
+        'windows_password': '',
+        'winsrv_ip': '',
+        'windows_server_user': '',
+        'windows_server_password': '',
+    },
 ]
