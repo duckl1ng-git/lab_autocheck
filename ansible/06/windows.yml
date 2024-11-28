@@ -1,0 +1,41 @@
+- name: Windows Check
+  hosts: domain
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    win_ping:
+
+  - name: Domain Member Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        (gwmi win32_computersystem).partofdomain
+        (gwmi win32_computersystem).domain
+    register: domain
+    failed_when:
+      - domain.output[0] != true
+
+  - name: Print Domain Name
+    debug:
+      msg: Domain name is {{ domain.output[1] }}
+
+  - name: Registry Check
+    check_mode: False
+    changed_when: False
+    when: inventory_hostname in groups['wan_windows']
+    ansible.windows.win_powershell:
+      script: |
+        Get-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Services\Rasman\Parameters\'
+    register: registry
+    #failed_when:
+    #  - "'AllowL2TPWeakCrypto' in registry.output"
+    #  - "'Prohibit IpSec' in registry.output"
+    
+  - name: Print Registry Check Result
+    when: inventory_hostname in groups['wan_windows']
+    debug:
+      msg:
+        - "{{ registry }}"
