@@ -70,7 +70,7 @@ mapping = [
         'wan_win10_ip': '',
         'windows_user': '',
         'windows_password': '',
-        'winsrv_ip': '',
+        'winserver_ip': '',
         'windows_server_user': '',
         'windows_server_password': '',
     },

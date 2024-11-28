@@ -30,12 +30,6 @@
       script: |
         Get-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Services\Rasman\Parameters\'
     register: registry
-    #failed_when:
-    #  - "'AllowL2TPWeakCrypto' in registry.output"
-    #  - "'Prohibit IpSec' in registry.output"
-    
-  - name: Print Registry Check Result
-    when: inventory_hostname in groups['wan_windows']
-    debug:
-      msg:
-        - "{{ registry }}"
+    failed_when:
+      - "registry.output[0].AllowL2TPWeakCrypto != 1"
+      - "registry.output[0].ProhibitIpSec != 1"
