@@ -4,22 +4,25 @@ from jinja2 import Environment, FileSystemLoader
 from ansi2html import Ansi2HTMLConverter
 from mapping import mapping
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 # Main page
 @app.route('/')
 def Lab():
-    return render_template('index.html')
+    return render_template('index.html', labs=mapping)
 
 # Lab page
 @app.route('/<id>', methods=['GET', 'POST'])
 def Lab_N(id):
+
+    lab = mapping[int(id) - 1]
+    values = lab['vars']
+
     if request.method == 'GET':
-        return render_template(f'{id}.html')
+        return render_template('lab.html', lab=lab)
     else:
         template = get_template(id)
 
-        values = mapping[int(id) - 1]
 
         for k in values:
             values[k] = request.form[k]

@@ -1,32 +1,15 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Lab Checker</title>
-</head>
-<body>
-    <h1>Список лабораторных работ</h1>
+{% extends "base.html" %}
 
+{% block content %}
+<h1>Список лабораторных работ</h1>
+
+<div class="container">
     <ul>
+        {% for lab in labs %}
         <li>
-            <a href="01">Windows</a>
+            <a href="/{{ lab['id']}}">{{ lab['name']}}</a>
         </li>
-        <li>
-            <a href="">02_Zhurnal_Windows #TODO</a>
-        </li>
-        <li>
-            <a href="03">Базова схема PfSense</a>
-        </li>
-        <li>
-            <a href="04">ICMP туннелирование</a>
-        </li>
-        <li>
-            <a href="05">DNS туннелирование</a>
-        </li>
-        <li>
-            <a href="06">VPN на PfSense</a>
-        </li>
+        {% endfor %}
     </ul>
-
-</body>
-</html>
+</div>
+{% endblock content %}
