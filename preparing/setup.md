@@ -12,8 +12,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 .\winrm_basic.ps1
 ```
 
-> Для Windows Server возможно не нужно выполнять скрипт, т.к. winrm уже включен. Проверить!
-
 # Windows 7
 
 [Установить](https://www.microsoft.com/ru-ru/download/details.aspx?id=48137) .NET Framework 4.6
@@ -32,5 +30,3 @@ cd lab_autocheck
 chmod +x install.sh
 ./install.sh
 ```
-
-??? ansible-galaxy collection install microsoft.ad -p ./collections ???
