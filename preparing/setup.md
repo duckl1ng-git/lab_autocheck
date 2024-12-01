@@ -25,7 +25,10 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 # Checker
 
 ```bash
+apt update
+apt install git
 git clone https://github.com/duckl1ng-git/lab_autocheck.git
+cd lab_autocheck
 chmod +x install.sh
 ./install.sh
 ```

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Помощь</h1>
+
+    <p>
+        Ниже будут приведены картинки с расположением чекера для каждой лабораторной.<br>
+        Нужно расположить чекер в соответсвии со схемой.<br>
+        На экране входа чекера будет написан его IP-адрес из внутренней сети, получаемый по DHCP.<br>
+        С любой из соседних машин с гарфическим интерфесом нужно зайти в браузер и перейти по адресу http://CHECKER_IP/, где
+        CHECKER_IP - адрес чекера с экрана входа.
+    </p>
+    
+    <p>
+        <b>Внимание!</b><br>
+        Для успешной проверки хостов с ОС Linux или PfSense нужно включить службу SSH.<br>
+        
+        <details> 
+            <summary>Как включить SSH на PfSense</summary>
+            <p>
+                В верхней панели System -> Advanced. Листаем ниже и находим раздел Secure Shell, ставим галочку (Enable Secure Shell) напротив Secure Shell Server. Затем сохраняем (Save).
+            </p>
+        </details>
+
+        <details> 
+            <summary>Как включить SSH на Linux</summary>
+            <p>
+                Редактируем конфиг: <b>nano /etc/ssh/sshd_config</b><br>
+                Меняем строку <b>#PermitRootLogin prohibit-password</b> на <b>PermitRootLogin yes</b><br>
+                Выполняем команду: <b>systemctl restart ssh</b><br>
+
+            </p>
+        </details>
+    </p>
+
+    <p>
+        По возможным ошибкам и некорректной работе чекера можно писать в телеграм <a href="https://t.me/duckl1ng_u">@duckl1ng_u</a>
+    </p>
+
+    <p>
+        Также большая просьба дать обратную связь по Вашему опыту взаимодействия с чекером!
+        Ссылка расположена внизу страницы ("Обратная связь")
+    </p>
+
+    <ul>
+        {% for lab in labs %}
+        <li>
+            {{ lab['name']}}<br>
+            <img src="/static/{{ lab['id'] }}.jpg">
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

@@ -11,6 +11,11 @@ app = Flask(__name__, static_url_path='/static')
 def Lab():
     return render_template('index.html', labs=mapping)
 
+# Help page
+@app.route('/help')
+def Help():
+    return render_template('help.html', labs=mapping)
+
 # Lab page
 @app.route('/<id>', methods=['GET', 'POST'])
 def Lab_N(id):
@@ -56,4 +61,4 @@ def run_command(command):
     return Response(generate(), mimetype='text/html')
 
 if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=False, host="0.0.0.0", port=80)

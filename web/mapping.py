@@ -1,5 +1,4 @@
 mapping = [
-    # 01 Windows
     {
         'id': '01',
         'name': 'Windows',
@@ -20,9 +19,12 @@ mapping = [
             'pass2': 'eve@123',
         }
     },
-    # 02 Windows Monitoring
-    {},
-    # 03 PfSense Base Scheme
+    {
+        'id': '',
+        'name': 'Windows. Аудит и мониторинг #TODO',
+        'vars': {
+        }
+    },
     {
         'id': '03',
         'name': 'Базовая схема PfSense',
@@ -37,7 +39,6 @@ mapping = [
             'windows_password': 'eve@123',
         }
     },
-    # 04 ICMP Tunnel
     {
         'id': '04',
         'name': 'ICMP туннелирование',
@@ -55,7 +56,6 @@ mapping = [
             'windows_password': 'eve@123',
         }
     },
-    # 05 DNS Tunnel
     {
         'id': '05',
         'name': 'DNS туннелирование',
@@ -77,7 +77,6 @@ mapping = [
             'windows_server_password': 'eve@123',
         }
     },
-    # 06 VPN PfSense
     {
         'id': '06',
         'name': 'VPN на PfSense',
