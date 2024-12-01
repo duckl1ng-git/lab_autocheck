@@ -1,12 +1,11 @@
 [Unit]
 Description=Lab Checker Web
-After=network.target
 
 [Service]
 Type=simple
 User=root
 WorkingDirectory=/root/lab_autocheck/web/
-ExecStartPre=/bin/bash -c '[ "$(curl ifconfig.me >/dev/null 2>&1 && echo online || echo offline)" = "online" ] && git pull || echo "No Internet, skipping git pull"'
+ExecStartPre=/bin/bash -c 'sleep 5 && [ "$(curl ifconfig.me >/dev/null 2>&1 && echo online || echo offline)" = "online" ] && git pull || echo "no internet or git pull error"'
 ExecStart=/root/lab_autocheck/web/.venv/bin/python /root/lab_autocheck/web/app.py
 Restart=always
 
