@@ -31,7 +31,7 @@ mapping = [
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
             'fw2_dmz_ip': '10.10.10.1',
-            'fw2_lab_ip': '10.10.20.254',
+            'fw2_lan_ip': '10.10.20.254',
             'pfsense_user': 'admin',
             'pfsense_pass': 'pfsense',
             'lan_win7_ip': '10.10.20.10',
