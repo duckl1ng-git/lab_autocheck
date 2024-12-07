@@ -41,7 +41,7 @@
     pfsensible.core.pfsense_gateway:
       interface: "DMZ"
       name: "LAN_GW"
-      gateway: "{{fw2_dmz_ip}}"
+      gateway: "{{fw1_dmz_ip}}"
       descr: "10 to 20"
 
   - name: Default Gateway Check

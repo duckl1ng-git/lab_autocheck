@@ -30,3 +30,12 @@ cd lab_autocheck
 chmod +x install.sh
 ./install.sh
 ```
+
+Если по каким-то причинам не доступен `galaxy.ansible.com`, произвести установку модуля `pfsensible.core` вручную.
+```bash
+cd /root/lab_autocheck/ansible/collections/ansible_collections
+wget https://github.com/pfsensible/core/archive/refs/tags/0.6.1.zip
+unzip 0.6.1.zip -d pfsensible
+rm 0.6.1.zip
+mv pfsensible/core-0.6.1 pfsensible/core
+```
