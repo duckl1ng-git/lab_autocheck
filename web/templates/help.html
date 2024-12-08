@@ -45,8 +45,10 @@
     <ul>
         {% for lab in labs %}
         <li>
-            {{ lab['name']}}<br>
-            <img src="/static/{{ lab['id'] }}.jpg">
+            <details> 
+                <summary>{{ lab['name']}}</summary>
+                <img src="/static/{{ lab['id'] }}.png">
+            </details>
         </li>
         {% endfor %}
     </ul>
