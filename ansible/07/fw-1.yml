@@ -1,0 +1,165 @@
+- name: FW-1 Check
+  hosts: fw1
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: General Setup Check
+    pfsensible.core.pfsense_setup:
+      hostname: "FW-1"
+      domain: "yargu"
+      dns_hostnames: 8.8.8.8
+      timezone: Europe/Moscow
+
+  - name: WAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em0"
+      descr: "WAN"
+      enable: True
+      ipv4_type: "dhcp"
+      blockbogons: False
+      blockpriv: False
+    register: wan_cfg
+    changed_when:
+      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
+
+  - name: DMZ(LAN) Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em1"
+      descr: "DMZ"
+      enable: True
+      ipv4_type: "static"
+      ipv4_address: "{{fw1_dmz_ip}}"
+      ipv4_prefixlen: 24
+      blockbogons: False
+      blockpriv: False
+
+  - name: Gateway Check
+    pfsensible.core.pfsense_gateway:
+      interface: "DMZ"
+      name: "LAN_GW"
+      gateway: "{{fw2_dmz_ip}}"
+      descr: "10 to 20"
+
+  - name: Default Gateway Check
+    pfsensible.core.pfsense_default_gateway:
+      gateway: "WAN_DHCP"
+      ipprotocol: "inet"
+
+  - name: Static Route Check
+    pfsensible.core.pfsense_route:
+      descr: "10 to 20"
+      gateway: "LAN_GW"
+      network: 10.10.20.0/24
+      state: present
+
+  - name: LAN Net Alias Check
+    pfsensible.core.pfsense_alias:
+      name: "LAN_net"
+      descr: "LAN"
+      type: "network"
+      address: 10.10.20.0/24
+      state: present
+    register: lan_alias
+    changed_when:
+      - lan_alias.commands[0] != "update alias 'LAN_net' set detail=none"
+
+  - name: DMZ Net Alias Check
+    pfsensible.core.pfsense_alias:
+      name: "DMZ_net"
+      descr: "DMZ"
+      type: "network"
+      address: 10.10.10.0/24
+      state: present
+    register: dmz_alias
+    changed_when:
+      - dmz_alias.commands[0] != "update alias 'DMZ_net' set detail=none"
+
+  - name: Allow From LAN Rule Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow from LAN"
+      protocol: any
+      source: "LAN_net"
+      destination: any
+      interface: "DMZ"
+      disabled: true
+
+  - name: Allow From DMZ Rule Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow from DMZ"
+      protocol: any
+      source: "DMZ_net"
+      destination: any
+      interface: "DMZ"
+      disabled: true
+
+  - name: Other Rules Disabled Check
+    pfsensible.core.pfsense_rule:
+      name: "{{ item }}"
+      interface: "DMZ"
+      disabled: true
+      source: "NET:DMZ"
+      destination: any
+      ipprotocol: "{{ 'inet6' if 'IPv6' in item else 'inet' }}"
+    register: default_rule
+    changed_when:
+      - default_rule.commands[0] != "update rule '{{item}}' on 'DMZ' set statetype='keep state'"
+    loop:
+      - "Default allow LAN to any rule"
+      - "Default allow LAN IPv6 to any rule"
+    loop_control:
+      label: "{{ item }}"
+
+  - name: Installed Packages Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/installedpackages/package/name' /cf/conf/config.xml
+    register: packages
+    failed_when:
+      - "'<name>squid3</name>' not in packages.stdout_lines"
+      - "'<name>Lightsquid</name>' not in packages.stdout_lines"
+  
+  - name: Squid Cache Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidcache/config/harddisk_cache_size' /cf/conf/config.xml
+    register: squidcache_config
+    failed_when:
+      - "'<harddisk_cache_size>512</harddisk_cache_size>' not in squidcache_config.stdout_lines"
+
+  - name: Squid Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squid/config/*' /cf/conf/config.xml
+    register: squid_config
+    failed_when:
+      - "'<enable_squid>on</enable_squid>' not in squid_config.stdout_lines"
+      - "'<allow_interface>lan,lo0</allow_interface>' not in squid_config.stdout_lines"
+      - "'<log_enabled>on</log_enabled>' not in squid_config.stdout_lines"
+      - "'<log_rotate>1</log_rotate>' not in squid_config.stdout_lines"
+      - "'<visible_hostname>FW-1</visible_hostname>' not in squid_config.stdout_lines"
+      - "'<error_language>ru</error_language>' not in squid_config.stdout_lines"
+
+  - name: Squid Allowed Subnets Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidnac/config/allowed_subnets' /cf/conf/config.xml
+    register: squidnac_config
+    failed_when:
+      - "'10.10.10.0/24' not in squidnac_config.stdout | regex_search('<.*>(.*?)</.*>') | b64decode"
+      - "'10.10.20.0/24' not in squidnac_config.stdout | regex_search('<.*>(.*?)</.*>') | b64decode"
+
+  - name: Allow Proxy Rule Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow Proxy"
+      protocol: any
+      source: any
+      destination: (self)
+      interface: "DMZ"
