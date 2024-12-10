@@ -20,7 +20,7 @@
       xmllint --xpath '/pfsense/*/dnsserver' /cf/conf/config.xml
     register: dnsserver
     failed_when:
-      - "'{{fw1_dmz_ip}}' not in dnsserver"
+      - "'{{fw1_dmz_ip}}' not in dnsserver.stdout"
 
   - name: DMZ(WAN) Interface Check
     pfsensible.core.pfsense_interface:

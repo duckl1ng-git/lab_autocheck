@@ -20,7 +20,7 @@
       xmllint --xpath '/pfsense/*/dnsserver' /cf/conf/config.xml
     register: dnsserver
     failed_when:
-      - "'8.8.8.8' not in dnsserver"
+      - "'8.8.8.8' not in dnsserver.stdout"
 
   - name: WAN Interface Check
     pfsensible.core.pfsense_interface:
