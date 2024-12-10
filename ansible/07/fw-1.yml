@@ -181,3 +181,14 @@
     failed_when:
       - '"10.10.10.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'
       - '"10.10.20.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'
+
+  - name: Lightsquid Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/lightsquid/config/*' /cf/conf/config.xml
+    register: squid_config
+    failed_when:
+      - "'<lightsquid_lang>ru</lightsquid_lang>' not in squid_config.stdout_lines"
+      - "'<lightsquid_ip2name>dns</lightsquid_ip2name>' not in squid_config.stdout_lines"
+      - "'<lightsquid_refreshsheduler>1hp_10m</lightsquid_refreshsheduler>' not in squid_config.stdout_lines"
