@@ -1,0 +1,9 @@
+- name: Windows Check
+  hosts: windows
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    win_ping:
+

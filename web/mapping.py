@@ -93,4 +93,19 @@ mapping = [
             'windows_server_password': 'eve@1234',
         }
     },
+    {
+        'id': '07',
+        'name': 'Proxy',
+        'vars': {
+            'fw1_dmz_ip': '10.10.10.254',
+            'fw2_dmz_ip': '10.10.10.1',
+            'fw2_lan_ip': '10.10.20.254',
+            'pfsense_user': 'admin',
+            'pfsense_pass': 'pfsense',
+            'dmz_win7_ip': '10.10.10.10',
+            'lan_win7_ip': '10.10.20.10',
+            'windows_user': 'Admin',
+            'windows_password': 'eve@123',
+        }
+    },
 ]
