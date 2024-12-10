@@ -11,8 +11,16 @@
     pfsensible.core.pfsense_setup:
       hostname: "FW-1"
       domain: "yargu"
-      dns_hostnames: 8.8.8.8
       timezone: Europe/Moscow
+  
+  - name: DNS Server Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/dnsserver' /cf/conf/config.xml
+    register: dnsserver
+    failed_when:
+      - "'8.8.8.8' not in dnsserver"
 
   - name: WAN Interface Check
     pfsensible.core.pfsense_interface:
@@ -153,8 +161,8 @@
       xmllint --xpath '/pfsense/*/squidnac/config/allowed_subnets' /cf/conf/config.xml
     register: squidnac_config
     failed_when:
-      - "'10.10.10.0/24' not in squidnac_config.stdout | regex_search('<.*>(.*?)</.*>') | b64decode"
-      - "'10.10.20.0/24' not in squidnac_config.stdout | regex_search('<.*>(.*?)</.*>') | b64decode"
+      - '"10.10.10.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'
+      - '"10.10.20.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'
 
   - name: Allow Proxy Rule Check
     pfsensible.core.pfsense_rule:
@@ -163,3 +171,13 @@
       source: any
       destination: (self)
       interface: "DMZ"
+
+  - name: CA Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidnac/config/allowed_subnets' /cf/conf/config.xml
+    register: squidnac_config
+    failed_when:
+      - '"10.10.10.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'
+      - '"10.10.20.0/24" not in squidnac_config.stdout | regex_search("<.*>(.*?)</.*>", "\\1") | b64decode'

@@ -7,3 +7,19 @@
   - name: Ping Check
     win_ping:
 
+  - name: FW-CA Cert Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        Get-ChildItem -Path Cert:\CurrentUser\Root | Where-Object { $_.Subject -like "*FW-CA*"}
+    register: cert
+    failed_when:
+      - "cert.output | count != 1"
+      - "'FW-CA' not in cert.output[0].Subject"
+
+  - name: Proxy Check
+    win_uri:
+      url: https://ifconfig.me
+      method: GET
+      proxy_url: http://10.10.10.254:3128

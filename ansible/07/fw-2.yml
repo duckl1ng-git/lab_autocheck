@@ -11,8 +11,16 @@
     pfsensible.core.pfsense_setup:
       hostname: "FW-2"
       domain: yargu
-      dns_hostnames: 8.8.8.8
       timezone: Europe/Moscow
+
+  - name: DNS Server Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/dnsserver' /cf/conf/config.xml
+    register: dnsserver
+    failed_when:
+      - "'{{fw1_dmz_ip}}' not in dnsserver"
 
   - name: DMZ(WAN) Interface Check
     pfsensible.core.pfsense_interface:

@@ -102,7 +102,6 @@ mapping = [
             'fw2_lan_ip': '10.10.20.254',
             'pfsense_user': 'admin',
             'pfsense_pass': 'pfsense',
-            'dmz_win7_ip': '10.10.10.10',
             'lan_win7_ip': '10.10.20.10',
             'windows_user': 'Admin',
             'windows_password': 'eve@123',
