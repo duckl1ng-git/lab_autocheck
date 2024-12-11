@@ -18,8 +18,28 @@
       - "cert.output | count != 1"
       - "'FW-CA' not in cert.output[0].Subject"
 
+  - name: Request Without Proxy Check
+    win_uri:
+      url: https://ifconfig.me
+      method: GET
+    register: result
+    failed_when: "result.status_code != None"
+
+  - name: Request Without Proxy Result
+    debug:
+      msg: "{{result.msg}}"
+
   - name: Proxy Check
     win_uri:
       url: https://ifconfig.me
       method: GET
       proxy_url: http://10.10.10.254:3128
+    register: proxy_result
+    failed_when: "proxy_result.status_code != 200"
+
+  - name: Request Without Proxy Result
+    debug:
+      msg: 
+        - "{{proxy_result.msg}}"
+        - "{{proxy_result.url}}"
+        - "{{proxy_result.via}}"
