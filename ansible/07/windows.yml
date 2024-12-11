@@ -29,7 +29,7 @@
     debug:
       msg: "{{result.msg}}"
 
-  - name: Proxy Check
+  - name: Proxy Request Check
     win_uri:
       url: https://ifconfig.me
       method: GET
@@ -37,7 +37,7 @@
     register: proxy_result
     failed_when: "proxy_result.status_code != 200"
 
-  - name: Request Without Proxy Result
+  - name: Proxy Request Result
     debug:
       msg: 
         - "{{proxy_result.msg}}"
