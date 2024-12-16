@@ -1,0 +1,164 @@
+- name: FW-1 Check
+  hosts: fw1
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: General Setup Check
+    pfsensible.core.pfsense_setup:
+      hostname: "FW-1"
+      domain: "yargu"
+      timezone: Europe/Moscow
+  
+  - name: DNS Server Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/dnsserver' /cf/conf/config.xml
+    register: dnsserver
+    failed_when:
+      - "'8.8.8.8' not in dnsserver.stdout"
+
+  - name: WAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em0"
+      descr: "WAN"
+      enable: True
+      ipv4_type: "dhcp"
+      blockbogons: False
+      blockpriv: False
+    register: wan_cfg
+    changed_when:
+      - wan_cfg.commands[0] != "update interface 'WAN' set ipv6_address=none"
+
+  - name: LAN Interface Check
+    pfsensible.core.pfsense_interface:
+      interface: "em1"
+      descr: "LAN"
+      enable: True
+      ipv4_type: "static"
+      ipv4_address: "{{fw1_dmz_ip}}"
+      ipv4_prefixlen: 24
+
+  - name: WebConfigurator Port Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/system/webgui/port' /cf/conf/config.xml
+    register: port
+    failed_when:
+      - "'<port>5443</port>' not in port.stdout_lines"
+
+  - name: Allow HTTP Rule Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow HTTP"
+      protocol: tcp
+      source: any
+      destination: (self)
+      destination_port: 80
+      interface: "WAN"
+
+  - name: Allow HTTPS Rule Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow HTTPS"
+      protocol: tcp
+      source: any
+      destination: (self)
+      destination_port: 443
+      interface: "WAN"
+
+  - name: Allow WebConfigurator Rule Check
+    pfsensible.core.pfsense_rule:
+      name: "Allow WebConfigurator"
+      protocol: tcp
+      source: any
+      destination: (self)
+      destination_port: 5443
+      interface: "WAN"
+
+  - name: Installed Packages Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/installedpackages/package/name' /cf/conf/config.xml
+    register: packages
+    failed_when:
+      - "'<name>squid3</name>' not in packages.stdout_lines"
+  
+  - name: Squid Cache Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidcache/config/harddisk_cache_size' /cf/conf/config.xml
+    register: squidcache_config
+    failed_when:
+      - "'<harddisk_cache_size>512</harddisk_cache_size>' not in squidcache_config.stdout_lines"
+
+  - name: Squid Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squid/config/*' /cf/conf/config.xml
+    register: squid_config
+    failed_when:
+      - "'<enable_squid>on</enable_squid>' not in squid_config.stdout_lines"
+
+  - name: CA Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/ca/descr' /cf/conf/config.xml
+    register: ca
+    failed_when:
+      - '"<descr><![CDATA[FW-CA]]></descr>" not in ca.stdout'
+
+  - name: Certificates Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/cert/descr' /cf/conf/config.xml
+    register: cert
+    failed_when:
+      - '"<descr><![CDATA[Proxy-Server]]></descr>" not in cert.stdout'
+
+  - name: System Tunables Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/sysctl/item/*' /cf/conf/config.xml
+    register: tunables
+    failed_when:
+      - '"<tunable>net.inet.ip.portrange.reservedhigh</tunable>" not in tunables.stdout_lines'
+      - '"<value>0</value>" not in tunables.stdout_lines'
+
+  - name: Squid Reverse Proxy Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidreversegeneral/config/*' /cf/conf/config.xml
+    register: reverse_config
+    failed_when:
+      - '"<reverse_external_fqdn>yargu.hack</reverse_external_fqdn>" not in reverse_config.stdout_lines'
+      - '"<reverse_http>on</reverse_http>" not in reverse_config.stdout_lines'
+      - '"<reverse_https>on</reverse_https>" not in reverse_config.stdout_lines'
+
+  - name: Squid Reverse Proxy ClientCA Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/ca/refid' /cf/conf/config.xml
+    register: ca_id
+    failed_when:
+      - "ca_id | regex_replace('<.*>', '') not in reverse_config.stdout"
+
+  - name: Squid Reverse Proxy Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/cert/refid' /cf/conf/config.xml
+    register: cert_ids
+    failed_when:
+      - "cert_ids | regex_replace('<.*>', '') not in reverse_config.stdout"

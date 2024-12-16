@@ -1,0 +1,27 @@
+[pfsense]
+fw1 ansible_host={{ fw1_lan_ip }}
+
+[pfsense:vars]
+ansible_connection=ssh
+ansible_user={{ pfsense_user }}
+ansible_password={{ pfsense_pass }}
+fw1_lan_ip={{ fw1_lan_ip }}
+
+[windows]
+win7 ansible_host={{ lan_win7_ip }}
+
+[windows:vars]
+ansible_connection=winrm
+ansible_port=5985
+ansible_user={{ windows_user }}
+ansible_password={{ windows_password }}
+
+[linux]
+web1 ansible_host={{ web1_ip }}
+web2 ansible_host={{ web2_ip }}
+web3 ansible_host={{ web3_ip }}
+
+[linux:vars]
+ansible_connection=ssh
+ansible_user={{ linux_user }}
+ansible_password={{ linux_pass }}
