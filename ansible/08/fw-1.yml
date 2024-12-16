@@ -162,3 +162,44 @@
     register: cert_ids
     failed_when:
       - "cert_ids | regex_replace('<.*>', '') not in reverse_config.stdout"
+
+  - name: Squid Reverse Proxy Web Servers Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidreversepeer/config/*' /cf/conf/config.xml
+    register: reverse_peer_config
+    failed_when:
+      - '"<name>Web-1</name>" not in reverse_peer_config.stdout_lines'
+      - '"<ip>10.10.10.101</ip>" not in reverse_peer_config.stdout_lines'
+      - '"<port>80</port>" not in reverse_peer_config.stdout_lines'
+      - '"<name>Web-2</name>" not in reverse_peer_config.stdout_lines'
+      - '"<ip>10.10.10.102</ip>" not in reverse_peer_config.stdout_lines'
+      - '"<port>80</port>" not in reverse_peer_config.stdout_lines'
+      - '"<name>Web-3</name>" not in reverse_peer_config.stdout_lines'
+      - '"<ip>10.10.10.103</ip>" not in reverse_peer_config.stdout_lines'
+      - '"<port>80</port>" not in reverse_peer_config.stdout_lines'
+      - '"<name>Web-3</name>" not in reverse_peer_config.stdout_lines'
+      - '"<ip>10.10.10.103</ip>" not in reverse_peer_config.stdout_lines'
+      - '"<port>443</port>" not in reverse_peer_config.stdout_lines'
+      - '"<protocol>HTTPS</protocol>" not in reverse_peer_config.stdout_lines'
+
+  - name: Squid Reverse Proxy Mapping Config Check
+    check_mode: False
+    changed_when: False
+    shell: |
+      xmllint --xpath '/pfsense/*/squidreverseuri/config/*' /cf/conf/config.xml
+    register: reverse_peer_config
+    failed_when:
+      - '"<name>Web-1</name>" not in reverse_peer_config.stdout_lines'
+      - '"<peers>Web-1</peers>" not in reverse_peer_config.stdout_lines'
+      - '"<description><![CDATA[ya.ru]]></description>" not in reverse_peer_config.stdout_lines'
+      - '"<uri>ya-fake.ru</uri>" not in reverse_peer_config.stdout'
+      - '"<name>Web-2</name>" not in reverse_peer_config.stdout_lines'
+      - '"<peers>Web-2</peers>" not in reverse_peer_config.stdout_lines'
+      - '"<description><![CDATA[mail.ru]]></description>" not in reverse_peer_config.stdout_lines'
+      - '"<uri>mail-fake.ru</uri>" not in reverse_peer_config.stdout'
+      - '"<name>Web-3</name>" not in reverse_peer_config.stdout_lines'
+      - '"<peers>Web-3</peers>" not in reverse_peer_config.stdout_lines'
+      - '"<description><![CDATA[uniyar.ac.ru]]></description>" not in reverse_peer_config.stdout_lines'
+      - '"<uri>uniyar-fake.yargu.hack</uri>" not in reverse_peer_config.stdout'
