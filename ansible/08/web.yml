@@ -18,13 +18,13 @@
   - name: Interface Settings Check
     check_mode: False
     changed_when: False
-    shell: ip a
-    register: ip_a
+    shell: cat /etc/network/interfaces
+    register: interfaces
     failed_when:
-      - "'auto ens3' not in ip_a.stdout_lines"
-      - "'iface ens3 inet static' not in ip_a.stdout_lines"
-      - "'address '+hostvars[inventory_hostname].ansible_host+'/24' not in ip_a.stdout_lines"
-      - "'gateway '+hostvars['fw1'].fw1_lan_ip not in ip_a.stdout_lines"
+      - "'auto ens3' not in interfaces.stdout_lines"
+      - "'iface ens3 inet static' not in interfaces.stdout_lines"
+      - "'address '+hostvars[inventory_hostname].ansible_host+'/24' not in interfaces.stdout_lines"
+      - "'gateway '+hostvars['fw1'].fw1_lan_ip not in interfaces.stdout_lines"
 
   - name: /etc/hosts Check
     check_mode: False
@@ -32,7 +32,7 @@
     shell: cat /etc/hosts
     register: hosts
     failed_when:
-      - "'127.0.1.1 '+inventory_hostname not in hosts.stdout_lines | lower"
+      - 'inventory_hostname not in hosts.stdout | lower | regex_search("127.0.1.1[ \\t](.*)\\n", "\\1")'
 
   - name: /etc/resolv.conf Check
     check_mode: False

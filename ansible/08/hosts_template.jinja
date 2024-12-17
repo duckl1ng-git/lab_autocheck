@@ -31,6 +31,7 @@ wan-kali ansible_host={{ wan_kali_ip }}
 [linux:children]
 web
 rproxy
+kali
 
 [linux:vars]
 ansible_connection=ssh
