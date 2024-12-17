@@ -40,8 +40,18 @@
       descr: "LAN"
       enable: True
       ipv4_type: "static"
-      ipv4_address: "{{fw1_dmz_ip}}"
+      ipv4_address: "{{fw1_lan_ip}}"
       ipv4_prefixlen: 24
+    register: lan_cfg
+
+  - name: Some help
+    debug:
+      msg:
+        - "Please do \"Save -> Apply\" on LAN interface to pass this check!"
+        - "P.S. This happens because after initial setup through CLI, checker can't validate that some values are default."
+        - "If you still see this message, that means there is a mistake in interface configuration."
+        - "{{ lan_cfg }}"
+    when: lan_cfg.commands|length != 0
 
   - name: WebConfigurator Port Check
     check_mode: False
@@ -152,7 +162,7 @@
       xmllint --xpath '/pfsense/ca/refid' /cf/conf/config.xml
     register: ca_id
     failed_when:
-      - "ca_id | regex_replace('<.*>', '') not in reverse_config.stdout"
+      - "ca_id.stdout | regex_replace('<.*>', '') not in reverse_config.stdout"
 
   - name: Squid Reverse Proxy Config Check
     check_mode: False
@@ -161,7 +171,7 @@
       xmllint --xpath '/pfsense/cert/refid' /cf/conf/config.xml
     register: cert_ids
     failed_when:
-      - "cert_ids | regex_replace('<.*>', '') not in reverse_config.stdout"
+      - "cert_ids.stdout | regex_replace('<.*>', '') not in reverse_config.stdout"
 
   - name: Squid Reverse Proxy Web Servers Config Check
     check_mode: False
