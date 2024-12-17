@@ -1,0 +1,33 @@
+- name: Windows Check
+  hosts: win7
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    win_ping:
+
+  - name: Hosts File Check
+    check_mode: False
+    changed_when: False
+    ansible.windows.win_powershell:
+      script: |
+        cat C:\Windows\System32\drivers\etc\hosts
+    register: hosts
+    failed_when:
+      - "hostbars['fw1'].fw1_wan_ip+' ya-fake.ru' not in hosts.stdout_lines"
+      - "hostbars['fw1'].fw1_wan_ip+' mail-fake.ru' not in hosts.stdout_lines"
+      - "hostbars['fw1'].fw1_wan_ip+' uniyar-fake.yargu.hack' not in hosts.stdout_lines"
+
+  - name: Request Check
+    win_uri:
+      url: "http://{{ item }}"
+      method: GET
+    loop:
+      - "ya-fake.ru"
+      - "mail-fake.ru"
+      - "uniyar-fake.yargu.hack"
+    loop_control:
+      label: "{{ item }}"
+    register: result
+    failed_when: "result.status_code != 200"

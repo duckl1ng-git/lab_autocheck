@@ -1,0 +1,74 @@
+- name: Web Check
+  hosts: web
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: Hostname Check
+    check_mode: False
+    changed_when: False
+    shell: hostname
+    register: hostname
+    failed_when:
+      - "hostname.stdout | lower != inventory_hostname"
+  
+  - name: Interface Settings Check
+    check_mode: False
+    changed_when: False
+    shell: ip a
+    register: ip_a
+    failed_when:
+      - "'auto ens3' not in ip_a.stdout_lines"
+      - "'iface ens3 inet static' not in ip_a.stdout_lines"
+      - "'address '+hostvars[inventory_hostname].ansible_host+'/24' not in ip_a.stdout_lines"
+      - "'gateway '+hostvars['fw1'].fw1_lan_ip not in ip_a.stdout_lines"
+
+  - name: /etc/hosts Check
+    check_mode: False
+    changed_when: False
+    shell: cat /etc/hosts
+    register: hosts
+    failed_when:
+      - "'127.0.1.1 '+inventory_hostname not in hosts.stdout_lines | lower"
+
+  - name: /etc/resolv.conf Check
+    check_mode: False
+    changed_when: False
+    shell: cat /etc/resolv.conf
+    register: resolv
+    failed_when:
+      - "'nameserver 8.8.8.8' not in resolv.stdout_lines"
+
+  - name: Packets Installation Check
+    check_mode: False
+    changed_when: False
+    shell: which whet nginx openssl
+    register: which
+    failed_when:
+      - "which.stdout_lines | count != 3"
+      - "'/usr/bin/wget' not in which.stdout_lines"
+      - "'/usr/sbin/nginx' not in which.stdout_lines"
+      - "'/usr/bin/openssl' not in which.stdout_lines"
+
+  - name: Downloaded Sources Check
+    check_mode: False
+    changed_when: False
+    shell: ls /var/www/
+    register: ls
+    failed_when:
+      - "inventory_hostname == 'web-1' and 'ya.ru' not in ls.stdout_lines"
+      - "inventory_hostname == 'web-2' and 'mail.ru' not in ls.stdout_lines"
+      - "inventory_hostname == 'web-3' and 'uniyar.ac.ru' not in ls.stdout_lines"
+
+  - name: Nginx Default Config Check
+    check_mode: False
+    changed_when: False
+    shell: cat /etc/nginx/sites-enables/default | egrep "root|index"
+    register: nginx_default
+    failed_when:
+      - "inventory_hostname == 'web-1' and 'ya.ru' not in nginx_default.stdout_lines"
+      - "inventory_hostname == 'web-2' and 'mail.ru' not in nginx_default.stdout_lines"
+      - "inventory_hostname == 'web-3' and 'uniyar.ac.ru' not in nginx_default.stdout_lines"
