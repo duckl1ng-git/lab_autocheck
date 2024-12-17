@@ -15,9 +15,9 @@
         cat C:\Windows\System32\drivers\etc\hosts
     register: hosts
     failed_when:
-      - "hostbars['fw1'].fw1_wan_ip+' ya-fake.ru' not in hosts.stdout_lines"
-      - "hostbars['fw1'].fw1_wan_ip+' mail-fake.ru' not in hosts.stdout_lines"
-      - "hostbars['fw1'].fw1_wan_ip+' uniyar-fake.yargu.hack' not in hosts.stdout_lines"
+      - "(hostbars['fw1'].fw1_wan_ip+' ya-fake.ru' not in hosts.output) and (hostbars['fw1'].fw1_wan_ip+'\tya-fake.ru' not in hosts.output)"
+      - "(hostbars['fw1'].fw1_wan_ip+' mail-fake.ru' not in hosts.output) and (hostbars['fw1'].fw1_wan_ip+'\tmail-fake.ru' not in hosts.output)"
+      - "(hostbars['fw1'].fw1_wan_ip+' uniyar-fake.yargu.hack' not in hosts.output) and (hostbars['fw1'].fw1_wan_ip+'\tuniyar-fake.yargu.hack' not in hosts.output)"
 
   - name: Request Check
     win_uri:

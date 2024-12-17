@@ -13,11 +13,13 @@
     shell: cat /etc/hosts
     register: hosts
     failed_when:
-      - "hostbars['fw1'].fw1_wan_ip+' ya-fake.ru' not in hosts.stdout_lines"
-      - "hostbars['fw1'].fw1_wan_ip+' mail-fake.ru' not in hosts.stdout_lines"
-      - "hostbars['fw1'].fw1_wan_ip+' uniyar-fake.yargu.hack' not in hosts.stdout_lines"
+      - 'hostvars["fw1"].fw1_wan_ip not in hosts.output | regex_search("\\n(.*)[ \\t]ya-fake.ru", "\\1")'
+      - 'hostvars["fw1"].fw1_wan_ip not in hosts.output | regex_search("\\n(.*)[ \\t]mail-fake.ru", "\\1")'
+      - 'hostvars["fw1"].fw1_wan_ip not in hosts.output | regex_search("\\n(.*)[ \\t]uniyar-fake.yargu.hack", "\\1")'
 
   - name: Request Check
+    check_mode: False
+    changed_when: False
     uri: 
       url: "http://{{ item }}"
       method: GET
@@ -28,4 +30,4 @@
     loop_control:
       label: "{{ item }}"
     register: result
-    failed_when: "result.status_code != 200"
+    failed_when: "result.status != 200"
