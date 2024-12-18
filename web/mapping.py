@@ -44,8 +44,8 @@ mapping = [
         'name': 'ICMP туннелирование',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
-            'fw2_lan_ip': '10.10.10.1',
-            'fw2_dmz_ip': '10.10.20.254',
+            'fw2_dmz_ip': '10.10.10.1',
+            'fw2_lan_ip': '10.10.20.254',
             'pfsense_user': 'admin',
             'pfsense_pass': 'pfsense',
             'lan_kali_ip': '10.10.20.11',
@@ -61,8 +61,8 @@ mapping = [
         'name': 'DNS туннелирование',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
-            'fw2_lan_ip': '10.10.10.1',
-            'fw2_dmz_ip': '10.10.20.254',
+            'fw2_dmz_ip': '10.10.10.1',
+            'fw2_lan_ip': '10.10.20.254',
             'pfsense_user': 'admin',
             'pfsense_pass': 'pfsense',
             'lan_kali_ip': '10.10.20.12',

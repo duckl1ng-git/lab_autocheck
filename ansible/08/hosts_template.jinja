@@ -37,3 +37,11 @@ kali
 ansible_connection=ssh
 ansible_user={{ linux_user }}
 ansible_password={{ linux_pass }}
+
+[all:children]
+linux
+windows
+pfsense
+
+[all:vars]
+nginx_rproxy={{ nginx_rproxy }}

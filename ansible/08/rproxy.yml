@@ -1,0 +1,18 @@
+- name: Reverse Proxy Check
+  hosts: reverseproxy
+  gather_facts: False
+
+  tasks:
+
+  - name: Ping Check
+    ping:
+
+  - name: Packets Installation Check
+    check_mode: False
+    changed_when: False
+    shell: which whet nginx
+    register: which
+    failed_when:
+      - "which.stdout_lines | count != 2"
+      - "'/usr/bin/wget' not in which.stdout_lines"
+      - "'/usr/sbin/nginx' not in which.stdout_lines"
