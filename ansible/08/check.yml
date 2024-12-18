@@ -1,4 +1,5 @@
 - import_playbook: fw-1.yml
+- import_playbook: linux_base_setup.yml
 - import_playbook: web.yml
 - import_playbook: wan-kali.yml
 - import_playbook: win7.yml

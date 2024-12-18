@@ -1,5 +1,5 @@
-- name: Web Check
-  hosts: reverseproxy
+- name: Linux Base Setup Check
+  hosts: web, reverseproxy
   gather_facts: False
 
   tasks:
