@@ -1,6 +1,5 @@
-mapping = [
-    {
-        'id': '01',
+mapping = {
+    '01': {
         'name': 'Windows',
         'vars': {
             'fw1_lan_ip': '10.10.10.254',
@@ -19,14 +18,7 @@ mapping = [
             'pass2': 'eve@123',
         }
     },
-    {
-        'id': '',
-        'name': 'Windows. Аудит и мониторинг #TODO',
-        'vars': {
-        }
-    },
-    {
-        'id': '03',
+    '03': {
         'name': 'Базовая схема PfSense',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
@@ -39,8 +31,7 @@ mapping = [
             'windows_password': 'eve@123',
         }
     },
-    {
-        'id': '04',
+    '04': {
         'name': 'ICMP туннелирование',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
@@ -56,8 +47,7 @@ mapping = [
             'windows_password': 'eve@123',
         }
     },
-    {
-        'id': '05',
+    '05': {
         'name': 'DNS туннелирование',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
@@ -77,8 +67,7 @@ mapping = [
             'windows_server_password': 'eve@123',
         }
     },
-    {
-        'id': '06',
+    '06': {
         'name': 'VPN на PfSense',
         'vars': {
             'fw1_lan_ip': '10.10.10.254',
@@ -93,8 +82,7 @@ mapping = [
             'windows_server_password': 'eve@1234',
         }
     },
-    {
-        'id': '07',
+    '07': {
         'name': 'Proxy',
         'vars': {
             'fw1_dmz_ip': '10.10.10.254',
@@ -107,4 +95,24 @@ mapping = [
             'windows_password': 'eve@123',
         }
     },
-]
+    '08': {
+        'name': 'Reverse Proxy',
+        'vars': {
+            'fw1_lan_ip': '10.10.10.254',
+            'fw1_wan_ip': '',
+            'pfsense_user': 'admin',
+            'pfsense_pass': 'pfsense',
+            'lan_win7_ip': '10.10.10.104',
+            'windows_user': 'Admin',
+            'windows_password': 'eve@123',
+            'web1_ip': '10.10.10.101',
+            'web2_ip': '10.10.10.102',
+            'web3_ip': '10.10.10.103',
+            'rproxy_ip': '10.10.10.200',
+            'wan_kali_ip': '',
+            'linux_user': 'root',
+            'linux_password': 'eve@123',
+            'is_nginx_reverse_proxy': False,
+        }
+    },
+}

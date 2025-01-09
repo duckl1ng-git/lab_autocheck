@@ -5,9 +5,9 @@
 
 <div class="container">
     <ul>
-        {% for lab in labs %}
+        {% for id in labs %}
         <li>
-            <a href="/{{ lab['id']}}">{{ lab['name']}}</a>
+            <a href="/{{ id }}">{{ labs[id]['name']}}</a>
         </li>
         {% endfor %}
     </ul>

@@ -20,14 +20,13 @@ def Help():
 @app.route('/<id>', methods=['GET', 'POST'])
 def Lab_N(id):
 
-    lab = mapping[int(id) - 1]
+    lab = mapping[id]
     values = lab['vars']
 
     if request.method == 'GET':
-        return render_template('lab.html', lab=lab)
+        return render_template('lab.html', lab=lab, id=id)
     else:
         template = get_template(id)
-
 
         for k in values:
             values[k] = request.form[k]

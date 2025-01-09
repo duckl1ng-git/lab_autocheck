@@ -18,7 +18,9 @@
         <details> 
             <summary>Как включить SSH на PfSense</summary>
             <p>
-                В верхней панели System -> Advanced. Листаем ниже и находим раздел Secure Shell, ставим галочку (Enable Secure Shell) напротив Secure Shell Server. Затем сохраняем (Save).
+                В верхней панели <b>System -> Advanced</b>. <br>
+                Листаем ниже и находим раздел <b>Secure Shell</b>, ставим галочку (Enable Secure Shell) напротив <b>Secure Shell Server</b>. <br>
+                Затем сохраняем (<b>Save</b>).
             </p>
         </details>
 
@@ -43,11 +45,11 @@
     </p>
 
     <ul>
-        {% for lab in labs %}
+        {% for id in labs %}
         <li>
             <details> 
-                <summary>{{ lab['name']}}</summary>
-                <img src="/static/{{ lab['id'] }}.png">
+                <summary>{{ labs[id]['name']}}</summary>
+                <img src="/static/{{ id }}.png">
             </details>
         </li>
         {% endfor %}

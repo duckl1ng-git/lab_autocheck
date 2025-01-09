@@ -1,0 +1,15 @@
+[Unit]
+Description=Settings
+After=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/lab_autocheck
+ExecStart=/root/lab_autocheck/settings.sh
+StandardInput=tty
+StandardOutput=tty
+StandardError=tty
+TTYPath=/dev/tty1
+
+[Install]
+WantedBy=networking.service

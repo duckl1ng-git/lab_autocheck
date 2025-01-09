@@ -3,9 +3,7 @@
 {% block content %}
 <h1>{{ lab['name'] }}</h1>
 <div class="container">
-    <form method="post" action="/{{ lab['id'] }}" target="output" class="left">
-        <input type="hidden" name="lab_id" value="{{ lab['id'] }}">
-        
+    <form method="post" action="/{{ id }}" target="output" class="left">
         {% for key in lab['vars'] %}
         <label>{{ key | upper | replace("_", " ") }}:</label>
         <input type="text" name="{{ key }}" placeholder="{{ key }}" value="{{ lab['vars'][key] }}">
