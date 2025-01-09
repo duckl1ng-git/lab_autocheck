@@ -98,7 +98,7 @@ mapping = {
     '08': {
         'name': 'Reverse Proxy',
         'vars': {
-            'fw1_lan_ip': '10.10.10.254',
+            'fw1_lan_ip': '10.10.10.1',
             'fw1_wan_ip': '',
             'pfsense_user': 'admin',
             'pfsense_pass': 'pfsense',
