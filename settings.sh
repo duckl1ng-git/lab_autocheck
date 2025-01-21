@@ -56,7 +56,7 @@ manual_ip_set() {
         if is_valid $NETMASK; then
             break
         else
-            echo "Invalid IP address format. Please try again"
+            echo "Invalid mask format. Please try again"
         fi
     done
     
@@ -66,7 +66,7 @@ manual_ip_set() {
         if is_valid $GATEWAY; then
             break
         else
-            echo "Invalid IP address format. Please try again"
+            echo "Invalid gateway IP address format. Please try again"
         fi
     done
     
