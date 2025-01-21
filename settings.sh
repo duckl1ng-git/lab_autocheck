@@ -23,14 +23,53 @@ try_dhcp() {
     fi
 }
 
+is_valid() {
+    local ip=$1
+    if [[ $ip =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]]; then
+        for octet in $(echo $ip | tr '.' ' '); do
+            if ((octet < 0 || octet > 255)); then
+                return 1
+            fi
+        done
+        return 0
+    else
+        return 1
+    fi
+}
+
 manual_ip_set() {
     ip addr flush $INTERFACE
-    echo "Enter IP: "
-    read IP
-    echo "Enter mask (for example 255.255.255.0): "
-    read NETMASK
-    echo "Enter gateway: "
-    read GATEWAY
+    
+    while true; do
+        echo "Enter IP: "
+        read IP
+        if is_valid $IP; then
+            break
+        else
+            echo "Invalid IP address format. Please try again"
+        fi
+    done
+
+    while true; do
+        echo "Enter mask (for example 255.255.255.0): "
+        read NETMASK
+        if is_valid $NETMASK; then
+            break
+        else
+            echo "Invalid IP address format. Please try again"
+        fi
+    done
+    
+    while true; do
+        echo "Enter gateway: "
+        read GATEWAY
+        if is_valid $GATEWAY; then
+            break
+        else
+            echo "Invalid IP address format. Please try again"
+        fi
+    done
+    
     echo ""
     echo "Applying..."
     ip addr add $IP/$NETMASK dev $INTERFACE

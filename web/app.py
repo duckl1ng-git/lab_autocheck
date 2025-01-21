@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, Response
-import subprocess
+import re, subprocess
 from jinja2 import Environment, FileSystemLoader
 from ansi2html import Ansi2HTMLConverter
 from mapping import mapping
@@ -20,6 +20,9 @@ def Help():
 @app.route('/<id>', methods=['GET', 'POST'])
 def Lab_N(id):
 
+    if id not in mapping.keys():
+        return Response(response="<h2>404 Error</h2>", status=404)
+
     lab = mapping[id]
     values = lab['vars']
 
@@ -29,7 +32,10 @@ def Lab_N(id):
         template = get_template(id)
 
         for k in values:
-            values[k] = request.form[k]
+            if validate(k, request.form[k]):
+                values[k] = request.form[k]
+            else:
+                return "<h1 style='color: red; text-align: center; vartical-align: middle;'>Form validation error!</h1>"
 
         hosts = template.render(values)
             
@@ -38,6 +44,18 @@ def Lab_N(id):
 
         command = f"ansible-playbook -i ../ansible/{id}/hosts_rendered.ini ../ansible/{id}/check.yml -CD"
         return run_command(command)
+
+def validate(key, value):
+    if 'ip' in key:
+        ip_regex = r'^([0-9]{1,3}\.){3}[0-9]{1,3}$'
+        if not re.match(ip_regex, value):
+            return False
+        
+        octets = value.split('.')
+        return all(0 <= int(octet) <= 255 for octet in octets)
+    else:
+        string_regex = r'^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};:,.<>?/]+$'
+        return len(value) <= 20 and re.match(string_regex, value) != None
 
 def get_template(id):
     env = Environment(loader=FileSystemLoader(f'../ansible/{id}'))
